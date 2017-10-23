@@ -1,0 +1,29 @@
+{
+  "name": "repress",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "kornalius <arianesoftinc@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "fs-promise": "^2.0.2",
+    "is_js": "^0.9.0",
+    "jquery": "^3.2.1",
+    "lodash": "^4.17.4",
+    "mixwith": "^0.1.1",
+    "performance-now": "^2.1.0",
+    "shortid": "^2.2.8",
+    "underscore-plus": "^1.6.6",
+    "underscore.array": "^0.1.1",
+    "underscore.string": "^3.3.4",
+    "uuid": "^3.1.0"
+  },
+  "devDependencies": {
+    "electron": "^1.7.4",
+    "eslint": "^3.6.0",
+    "jsdoc": "^3.5.4"
+  }
+}
