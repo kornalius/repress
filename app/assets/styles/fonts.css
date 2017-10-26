@@ -1,0 +1,25 @@
+@font-face {
+  font-family: DOS;
+  font-size: 16px;
+  src: url(../fonts/DOS.ttf);
+}
+
+@font-face {
+  font-family: ARCADE;
+  src: url(../fonts/ARCADE.ttf);
+}
+
+@font-face {
+  font-family: C64;
+  src: url(../fonts/C64.ttf);
+}
+
+@font-face {
+  font-family: VCR;
+  src: url(../fonts/VCR.ttf);
+}
+
+@font-face {
+  font-family: TYPE;
+  src: url(../fonts/TYPE.ttf);
+}

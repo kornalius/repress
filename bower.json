@@ -16,5 +16,8 @@
     "tests"
   ],
   "devDependencies": {},
-  "dependencies": {}
+  "dependencies": {
+    "polymer": "^2.2.0",
+    "iron-flex-layout": "^2.0.0"
+  }
 }

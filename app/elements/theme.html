@@ -1,0 +1,92 @@
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+<style>
+  html body {
+    background-color: #675db6;
+    color: #d5d5d5;
+    font: 18px TYPE;
+    text-shadow: 0px 0px 6px rgba(213, 213, 213, 0.25);
+  }
+</style>
+
+<dom-module id="app-theme">
+
+  <template>
+
+    <style include="iron-flex iron-flex-alignment iron-positioning iron-flex-factors">
+      :host {
+        --black-color: #222222;
+        --white-color: #D5D5D5;
+
+        --grey-color: #4E4A4E;
+        --silver-color: #757161;
+
+        --blue-grey-color: #8595A1;
+        --pastel-blue-color: #675DB6;
+        --night-blue-color: #30346D;
+        --sea-blue-color: #597DCE;
+        --cloud-blue-color: #6DC2CA;
+
+        --red-color: #D04648;
+        --purple-color: #E06F8B;
+        --pink-color: #D2AA99;
+
+        --green-color: #346524;
+        --lime-green-color: #6DAA2C;
+
+        --dark-brown-color:#493C2B;
+        --brown-color: #854C30;
+        --orange-color: #D27D2C;
+        --yellow-color: #DAD45E;
+
+        --container-box: {
+          margin: .25em;
+          /* background-color: var(--grey-color); */
+          border: solid 2px var(--silver-color);
+        };
+
+        --container-title: {
+          @apply --layout-horizontal;
+          @apply --layout-center;
+          color: var(--yellow-color);
+          background-color: var(--night-blue-color);
+          height: 24px;
+        };
+
+        --container-content: {
+          @apply --layout-horizontal;
+          @apply --layout-flex;
+          height: 100%;
+          padding: .5em;
+        };
+
+        --cursor: {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          right: 0;
+          width: 8px;
+          background: black;
+          box-sizing: border-box;
+          -webkit-box-sizing: border-box;
+          border-left: .5em solid;
+
+          -webkit-animation: typing 12s steps(13, end) infinite, blinking 1s step-end infinite;
+          animation: typing 12s steps(13, end) infinite, blinking 1s step-end infinite;
+        }
+
+        @-webkit-keyframes blinking {
+          from, to { border-color: transparent; }
+          50% { border-color: green; }
+        }
+
+        @keyframes blinking {
+          from, to { border-color: transparent; }
+          50% { border-color: green; }
+        }
+      }
+    </style>
+
+  </template>
+
+</dom-module>

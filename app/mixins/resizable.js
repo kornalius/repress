@@ -1,7 +1,3 @@
-/**
- * @module mixins
- */
-
 module.exports = Mixin(superclass => class Resizable extends superclass {
 
   constructor () {
@@ -28,8 +24,6 @@ module.exports = Mixin(superclass => class Resizable extends superclass {
 
   resizable_mousemove (e) {
     if (_.get(this, '_pressed.button') === 0) {
-      // this.x = e.detail.x - this._pressed.x
-      // this.y = e.detail.y - this._pressed.y
       e.stopPropagation()
     }
   }

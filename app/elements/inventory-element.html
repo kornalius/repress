@@ -1,0 +1,36 @@
+<link rel="import" href="theme.html">
+
+<dom-module id="inventory-element">
+
+  <template>
+    <style include="app-theme">
+      :host {
+        @apply --container-box;
+      }
+      .title {
+        @apply --container-title;
+      }
+      .content {
+        @apply --container-content;
+      }
+    </style>
+
+    <div class="title">
+      <span>Inventory View</span>
+    </div>
+
+    <div class="content"></div>
+
+  </template>
+
+  <script>
+    class InventoryElement extends Polymer.Element {
+
+      static get is() { return 'inventory-element'; }
+
+    }
+
+    customElements.define(InventoryElement.is, InventoryElement);
+  </script>
+
+</dom-module>

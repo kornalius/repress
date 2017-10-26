@@ -1,0 +1,48 @@
+<link rel="import" href="theme.html">
+<link rel="import" href="type-element.html">
+
+<dom-module id="story-element">
+
+  <template>
+    <style include="app-theme">
+      :host {
+        @apply --container-box;
+      }
+      .title {
+        @apply --container-title;
+      }
+      .content {
+        @apply --container-content;
+      }
+    </style>
+
+    <div class="title">
+      <span>Story View</span>
+    </div>
+
+    <div class="content">
+      <type-element text="This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display."></type-element>
+    </div>
+
+  </template>
+
+  <script>
+    class StoryElement extends Polymer.Element {
+
+      static get is() { return 'story-element'; }
+
+      static get properties () {
+        return {
+          data: {
+            type: Object,
+            value: () => {},
+          },
+        }
+      }
+
+    }
+
+    customElements.define(StoryElement.is, StoryElement);
+  </script>
+
+</dom-module>

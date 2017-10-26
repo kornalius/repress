@@ -1,0 +1,47 @@
+<link rel="import" href="theme.html">
+
+<dom-module id="stats-element">
+
+  <template>
+    <style include="app-theme">
+      :host {
+        @apply --container-box;
+        @apply --layout-vertical;
+        @apply --layout-flex;
+      }
+      .title {
+        @apply --container-title;
+      }
+      .content {
+        @apply --container-content;
+      }
+    </style>
+
+    <div class="title">
+      <span>Stats View</span>
+    </div>
+
+    <div class="content"></div>
+
+  </template>
+
+  <script>
+    class StatsElement extends Polymer.Element {
+
+      static get is() { return 'stats-element'; }
+
+      static get properties () {
+        return {
+          data: {
+            type: Object,
+            value: () => {},
+          },
+        }
+      }
+
+    }
+
+    customElements.define(StatsElement.is, StatsElement);
+  </script>
+
+</dom-module>

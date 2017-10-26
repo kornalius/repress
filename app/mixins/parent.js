@@ -1,7 +1,3 @@
-/**
- * @module mixins
- */
-
 module.exports = Mixin(superclass => class Parent extends superclass {
 
   constructor () {

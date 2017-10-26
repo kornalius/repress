@@ -1,0 +1,157 @@
+<link rel="import" href="theme.html">
+
+<dom-module id="type-element">
+
+  <template>
+    <style include="app-theme">
+      :host {
+      }
+      #text {
+        width: 100%;
+      }
+      #text > span {
+        margin-right: .5em;
+      }
+      #cursor {
+        background-color: var(--white-color);
+        height: .3em;
+        width: .6em;
+        margin-left: -.4em;
+        margin-top: .7em;
+      }
+      .visible {
+        opacity: 1;
+      }
+      .hidden {
+        opacity: 0;
+      }
+    </style>
+
+    <div id="text" class="layout horizontal wrap">
+      <div id="cursor"></div>
+    </div>
+
+  </template>
+
+  <script>
+    class TypeElement extends Polymer.Element {
+
+      static get is() { return 'type-element'; }
+
+      static get properties () {
+        return {
+          minSpeed: {
+            type: Number,
+            value: 1,
+          },
+          maxSpeed: {
+            type: Number,
+            value: 150,
+          },
+          cursorBlinkSpeed: {
+            type: Number,
+            value: 350,
+          },
+          text: {
+            type: String,
+            value: '',
+          },
+          _currentText: {
+            type: String,
+            value: '',
+          },
+        }
+      }
+
+      connectedCallback () {
+        super.connectedCallback()
+        this.start()
+      }
+
+      start () {
+        this.hideCursor()
+        this._cursorInterval = setInterval(this.toggleCursor.bind(this), this.cursorBlinkSpeed)
+
+        this.clear()
+
+        this._x = -1
+
+        this.type()
+      }
+
+      _newSpan () {
+        this._span = document.createElement('span')
+        this.$.text.insertBefore(this._span, this.$.cursor)
+      }
+
+      type () {
+        setTimeout(() => {
+          if (!this._span) {
+            this._newSpan()
+          }
+          this._x++
+          if (this._x < this.text.length) {
+            let c = this.text[this._x]
+            if (c === ' ' && !_.isEmpty(this._span.innerHTML)) {
+              this._newSpan()
+            }
+            else {
+              this._span.innerHTML += c
+            }
+            this.showCursor()
+
+            let delay = 0
+            if (!/\w/.test(c)) {
+              delay = _.random(this.minSpeed, this.maxSpeed * (c === '.' ? 3 : 1))
+            }
+            setTimeout(() => {
+              this.type()
+            }, delay)
+          }
+          else {
+            this.stop()
+          }
+        }, _.random(this.minSpeed, this.maxSpeed))
+      }
+
+      stop () {
+        clearInterval(this._cursorInterval)
+        this._span = undefined
+        this.hideCursor()
+      }
+
+      clear () {
+        let spans = this.$.text.querySelectorAll('span')
+        while (spans.length) {
+          spans.removeChild(spans[0])
+        }
+        this._span = undefined
+      }
+
+      get isCursorVisible () {
+        return this.$.cursor.className === 'visible'
+      }
+
+      showCursor () {
+        this.$.cursor.className = 'visible'
+      }
+
+      hideCursor () {
+        this.$.cursor.className = 'hidden'
+      }
+
+      toggleCursor () {
+        if (this.isCursorVisible) {
+          this.hideCursor()
+        }
+        else {
+          this.showCursor()
+        }
+      }
+
+    }
+
+    customElements.define(TypeElement.is, TypeElement);
+  </script>
+
+</dom-module>
