@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "fs-promise": "^2.0.2",
+    "howler": "^2.0.5",
     "is_js": "^0.9.0",
     "jquery": "^3.2.1",
     "lodash": "^4.17.4",

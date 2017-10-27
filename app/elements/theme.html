@@ -6,6 +6,7 @@
     color: #d5d5d5;
     font: 18px TYPE;
     text-shadow: 0px 0px 6px rgba(213, 213, 213, 0.25);
+    user-select: none;
   }
 </style>
 
@@ -70,9 +71,25 @@
           box-sizing: border-box;
           -webkit-box-sizing: border-box;
           border-left: .5em solid;
-
-          -webkit-animation: typing 12s steps(13, end) infinite, blinking 1s step-end infinite;
           animation: typing 12s steps(13, end) infinite, blinking 1s step-end infinite;
+        }
+
+        --button: {
+          cursor: pointer;
+          padding: .25em;
+          margin: .25em;
+          border: 2px solid var(--night-blue-color);
+          background-color: var(--blue-grey-color);
+          color: var(--yellow-color);
+          transition: all 0.15s ease-out;
+        }
+
+        --button-pressed: {
+          background-color: var(--sea-blue-color);
+        }
+
+        --button-hover: {
+          color: var(--white-color);
         }
 
         @-webkit-keyframes blinking {

@@ -1,0 +1,74 @@
+<link rel="import" href="theme.html">
+
+<dom-module id="button-element">
+
+  <template>
+    <style include="app-theme">
+      :host {
+        display: inline-block;
+        @apply --button;
+      }
+      :host(.pressed) {
+        @apply --button-pressed;
+      }
+      :host(.hover) {
+        @apply --button-hover;
+      }
+    </style>
+
+    <div class="layout horizontal center-center">
+      <span>[[title]]</span>
+    </div>
+
+  </template>
+
+  <script>
+    class ButtonElement extends Polymer.Element {
+
+      static get is() { return 'button-element'; }
+
+      static get properties() {
+        return {
+          title: {
+            type: String,
+            value: 'Button',
+          },
+        }
+      }
+
+      ready () {
+        super.ready()
+
+        this.addEventListener('mousedown', this._onMousedown)
+        this.addEventListener('mouseup', this._onMouseup)
+        this.addEventListener('mouseover', this._onMouseover)
+        this.addEventListener('mouseout', this._onMouseout)
+      }
+
+      _onMousedown (e) {
+        this.classList.add('pressed')
+      }
+
+      _onMouseover (e) {
+        this.classList.add('hover')
+      }
+
+      _onMouseout (e) {
+        this.classList.remove('hover')
+        this.classList.remove('pressed')
+      }
+
+      _onMouseup (e) {
+        if (this.classList.contains('pressed')) {
+          this.dispatchEvent(new MouseEvent('click'))
+          window.Repress.app.sounds.play('button')
+        }
+        this.classList.remove('pressed')
+      }
+
+    }
+
+    customElements.define(ButtonElement.is, ButtonElement);
+  </script>
+
+</dom-module>

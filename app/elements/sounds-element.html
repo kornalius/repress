@@ -1,0 +1,41 @@
+<dom-module id="sounds-element">
+
+  <script>
+    class SoundsElement extends Polymer.Element {
+
+      static get is() { return 'sounds-element'; }
+
+      static get properties() {
+        return {
+          sounds: {
+            type: Object,
+            value: () => {
+              return {
+                key: { src: ['assets/sounds/key.wav'] },
+                button: { src: ['assets/sounds/button.wav'] },
+              }
+            },
+          },
+        }
+      }
+
+      ready () {
+        super.ready()
+
+        for (let key in this.sounds) {
+          this.sounds[key].handle = new Howl(this.sounds[key])
+        }
+      }
+
+      play (name) {
+        if (_.get(this, ['sounds', name])) {
+          this.sounds[name].handle.play()
+        }
+      }
+
+    }
+
+    customElements.define(SoundsElement.is, SoundsElement);
+  </script>
+
+</dom-module>

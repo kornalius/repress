@@ -1,4 +1,5 @@
 <link rel="import" href="theme.html">
+<link rel="import" href="sounds-element.html">
 <link rel="import" href="story-element.html">
 <link rel="import" href="stats-element.html">
 <link rel="import" href="inventory-element.html">
@@ -19,7 +20,7 @@
       #container {
         height: 100%;
       }
-      #container:before {
+      /* #container:before {
         content : '';
         display: block;
         position: absolute;
@@ -33,8 +34,8 @@
         background-repeat: repeat-y;
         opacity: .14;
         box-shadow : inset 0px 0px 80px 80px rgba(0, 0, 0, .5);
-        /* animation: flicker 0.15s infinite; */
-      }
+        animation: flicker 0.15s infinite;
+      } */
       .overlay {
         z-index: 4100;
       }
@@ -92,9 +93,11 @@
       }
     </style>
 
+    <sounds-element id="sounds"></sounds-element>
+
     <div id="container" class="layout horizontal">
 
-      <div class="overlay"></div>
+      <!-- <div class="overlay"></div> -->
 
       <story-element class="flex-8"></story-element>
 
@@ -122,6 +125,15 @@
             value: () => {},
           },
         }
+      }
+
+      ready () {
+        super.ready()
+
+        this.sounds = this.$.sounds
+
+        window.Repress = {}
+        window.Repress.app = this
       }
 
     }

@@ -18,6 +18,7 @@
         width: .6em;
         margin-left: -.4em;
         margin-top: .7em;
+        transition: opacity 0.15s ease-out;
       }
       .visible {
         opacity: 1;
@@ -99,6 +100,8 @@
               this._span.innerHTML += c
             }
             this.showCursor()
+
+            window.Repress.app.sounds.play('key')
 
             let delay = 0
             if (!/\w/.test(c)) {
