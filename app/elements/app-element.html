@@ -20,7 +20,7 @@
       #container {
         height: 100%;
       }
-      /* #container:before {
+      #container:before {
         content : '';
         display: block;
         position: absolute;
@@ -33,9 +33,10 @@
         background-size: 100% 4px;
         background-repeat: repeat-y;
         opacity: .14;
-        box-shadow : inset 0px 0px 80px 80px rgba(0, 0, 0, .5);
-        animation: flicker 0.15s infinite;
-      } */
+        box-shadow : inset 0px 0px 40px 20px rgba(0, 0, 0, .25);
+        animation: flicker 0.1s infinite;
+        pointer-events: none;
+      }
       .overlay {
         z-index: 4100;
       }
@@ -46,9 +47,10 @@
         width: 100%;
         height: 25%;
         background : #fff;
-        background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(255,250,250,1) 50%, rgba(255,255,255,0.98) 51%,rgba(255,0,0,0) 100%);
+        background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(255, 250, 250, 1) 50%, rgba(255, 255, 255, 0.98) 51%,rgba(255, 0, 0, 0) 100%);
         opacity : .025;
         animation: vline 4.25s linear infinite;
+        pointer-events: none;
       }
       .overlay:after {
         display: block;
@@ -57,6 +59,7 @@
         top: 0;
         right: 0;
         bottom: 0;
+        pointer-events: none;
         box-shadow: 0 2px 6px rgba(25,25,25,0.2),
                     inset 0 1px rgba(50,50,50,0.1),
                     inset 0 3px rgba(50,50,50,0.05),
@@ -66,30 +69,30 @@
 
       @keyframes vline {
         0%   { top: -25%}
-        100% { top: 100%;}
+        100% { top: 125%;}
       }
       @keyframes flicker {
-        0%   { opacity: 0.27861; }
-        5%   { opacity: 0.34769; }
-        10%  { opacity: 0.23604; }
-        15%  { opacity: 0.90626; }
-        20%  { opacity: 0.18128; }
-        25%  { opacity: 0.83891; }
-        30%  { opacity: 0.65583; }
-        35%  { opacity: 0.67807; }
-        40%  { opacity: 0.26559; }
-        45%  { opacity: 0.84693; }
-        50%  { opacity: 0.96019; }
+        0%   { opacity: 0.17861; }
+        5%   { opacity: 0.24769; }
+        10%  { opacity: 0.13604; }
+        15%  { opacity: 0.30626; }
+        20%  { opacity: 0.08128; }
+        25%  { opacity: 0.33891; }
+        30%  { opacity: 0.25583; }
+        35%  { opacity: 0.27807; }
+        40%  { opacity: 0.16559; }
+        45%  { opacity: 0.34693; }
+        50%  { opacity: 0.46019; }
         55%  { opacity: 0.08594; }
-        60%  { opacity: 0.20313; }
-        65%  { opacity: 0.71988; }
-        70%  { opacity: 0.53455; }
-        75%  { opacity: 0.37288; }
-        80%  { opacity: 0.71428; }
-        85%  { opacity: 0.70419; }
-        90%  { opacity: 0.7003; }
-        95%  { opacity: 0.36108; }
-        100% { opacity: 0.24387; }
+        60%  { opacity: 0.10313; }
+        65%  { opacity: 0.31988; }
+        70%  { opacity: 0.23455; }
+        75%  { opacity: 0.17288; }
+        80%  { opacity: 0.31428; }
+        85%  { opacity: 0.30419; }
+        90%  { opacity: 0.3003; }
+        95%  { opacity: 0.16108; }
+        100% { opacity: 0.04387; }
       }
     </style>
 
@@ -97,15 +100,15 @@
 
     <div id="container" class="layout horizontal">
 
-      <!-- <div class="overlay"></div> -->
+      <div class="overlay"></div>
 
-      <story-element class="flex-8"></story-element>
+      <story-element id="story" class="flex-8"></story-element>
 
       <div class="layout vertical flex-4">
 
-        <stats-element class="flex-4"></stats-element>
+        <stats-element id="stats" class="flex-4"></stats-element>
 
-        <inventory-element class="flex-8"></inventory-element>
+        <inventory-element id="inventory" class="flex-8"></inventory-element>
 
       </div>
 
@@ -130,10 +133,13 @@
       ready () {
         super.ready()
 
-        this.sounds = this.$.sounds
-
-        window.Repress = {}
-        window.Repress.app = this
+        window.Repress = {
+          app: this,
+          sounds: this.$.sounds,
+          story: this.$.story,
+          stats: this.$.stats,
+          inventory: this.$.inventory,
+        }
       }
 
     }

@@ -11,7 +11,11 @@
             type: Object,
             value: () => {
               return {
-                key: { src: ['assets/sounds/key.wav'] },
+                key1: { src: ['assets/sounds/key1.wav'] },
+                key2: { src: ['assets/sounds/key2.wav'] },
+                key3: { src: ['assets/sounds/key3.wav'] },
+                mouse1: { src: ['assets/sounds/mouse1.wav'] },
+                mouse2: { src: ['assets/sounds/mouse2.wav'] },
                 button: { src: ['assets/sounds/button.wav'] },
               }
             },
@@ -28,8 +32,90 @@
       }
 
       play (name) {
-        if (_.get(this, ['sounds', name])) {
-          this.sounds[name].handle.play()
+        let s = _.get(this, ['sounds', name])
+        if (s) {
+          return s.handle.play()
+        }
+        return undefined
+      }
+
+      stop (name, id) {
+        let s = _.get(this, ['sounds', name])
+        if (s) {
+          s.handle.stop(id)
+        }
+      }
+
+      mute (name, id) {
+        let s = _.get(this, ['sounds', name])
+        if (s) {
+          s.handle.mute(id)
+        }
+      }
+
+      fade (name, from, to, duration, id) {
+        let s = _.get(this, ['sounds', name])
+        if (s) {
+          s.handle.fade(from, to, duration, id)
+        }
+      }
+
+      volume (name, volume, id) {
+        let s = _.get(this, ['sounds', name])
+        if (s) {
+          s.handle.volume(volume, id)
+        }
+      }
+
+      loop (name, loop, id) {
+        let s = _.get(this, ['sounds', name])
+        if (s) {
+          s.handle.loop(loop, id)
+        }
+      }
+
+      rate (name, rate, id) {
+        let s = _.get(this, ['sounds', name])
+        if (s) {
+          s.handle.rate(rate, id)
+        }
+      }
+
+      seek (name, seek, id) {
+        let s = _.get(this, ['sounds', name])
+        if (s) {
+          s.handle.seek(seek, id)
+        }
+      }
+
+      state (name) {
+        let s = _.get(this, ['sounds', name])
+        if (s) {
+          return s.handle.state()
+        }
+        return undefined
+      }
+
+      playing (name, id) {
+        let s = _.get(this, ['sounds', name])
+        if (s) {
+          return s.handle.playing(id)
+        }
+        return false
+      }
+
+      duration (name, id) {
+        let s = _.get(this, ['sounds', name])
+        if (s) {
+          return s.handle.duration(id)
+        }
+        return -1
+      }
+
+      unload (name) {
+        let s = _.get(this, ['sounds', name])
+        if (s) {
+          s.handle.unload()
         }
       }
 

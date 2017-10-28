@@ -5,7 +5,7 @@
   <template>
     <style include="app-theme">
       :host {
-        display: inline-block;
+        display: inline-flex;
         @apply --button;
       }
       :host(.pressed) {
@@ -36,13 +36,22 @@
         }
       }
 
-      ready () {
-        super.ready()
+      connectedCallback () {
+        super.connectedCallback()
 
         this.addEventListener('mousedown', this._onMousedown)
         this.addEventListener('mouseup', this._onMouseup)
         this.addEventListener('mouseover', this._onMouseover)
         this.addEventListener('mouseout', this._onMouseout)
+      }
+
+      disconnectedCallback () {
+        super.disconnectedCallback()
+
+        this.removeEventListener('mousedown', this._onMousedown)
+        this.removeEventListener('mouseup', this._onMouseup)
+        this.removeEventListener('mouseover', this._onMouseover)
+        this.removeEventListener('mouseout', this._onMouseout)
       }
 
       _onMousedown (e) {
@@ -61,7 +70,7 @@
       _onMouseup (e) {
         if (this.classList.contains('pressed')) {
           this.dispatchEvent(new MouseEvent('click'))
-          window.Repress.app.sounds.play('button')
+          Repress.sounds.play('button')
         }
         this.classList.remove('pressed')
       }

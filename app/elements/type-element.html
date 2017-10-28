@@ -43,11 +43,11 @@
         return {
           minSpeed: {
             type: Number,
-            value: 1,
+            value: 25,
           },
           maxSpeed: {
             type: Number,
-            value: 150,
+            value: 75,
           },
           cursorBlinkSpeed: {
             type: Number,
@@ -101,7 +101,9 @@
             }
             this.showCursor()
 
-            window.Repress.app.sounds.play('key')
+            let s = 'key' + _.random(1, 3);
+            let id = Repress.sounds.play(s)
+            Repress.sounds.volume(s, _.random(0.25, 0.75, true), id)
 
             let delay = 0
             if (!/\w/.test(c)) {

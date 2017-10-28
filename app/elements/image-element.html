@@ -1,0 +1,50 @@
+<link rel="import" href="theme.html">
+
+<dom-module id="image-element">
+
+  <template>
+    <style include="app-theme">
+      :host {
+        display: inline-flex;
+      }
+    </style>
+
+    <img src="[[src]]"></img>
+
+  </template>
+
+  <script>
+    class ImageElement extends Polymer.Element {
+
+      static get is() { return 'image-element'; }
+
+      static get properties() {
+        return {
+          src: {
+            type: String,
+          },
+        }
+      }
+
+      connectedCallback () {
+        super.connectedCallback()
+
+        this.addEventListener('mousedown', this._onMousedown)
+      }
+
+      disconnectedCallback () {
+        super.disconnectedCallback()
+
+        this.removeEventListener('mousedown', this._onMousedown)
+      }
+
+      _onMousedown (e) {
+        console.log(e.clientX - e.currentTarget.offsetLeft, e.clientY - e.currentTarget.offsetTop)
+      }
+
+    }
+
+    customElements.define(ImageElement.is, ImageElement);
+  </script>
+
+</dom-module>
