@@ -5,6 +5,7 @@
   <template>
     <style include="app-theme">
       :host {
+        margin: .25em;
       }
       #text {
         width: 100%;
@@ -53,6 +54,10 @@
             type: Number,
             value: 350,
           },
+          autoStart: {
+            type: Boolean,
+            value: false,
+          },
           text: {
             type: String,
             value: '',
@@ -66,7 +71,14 @@
 
       connectedCallback () {
         super.connectedCallback()
-        this.start()
+
+        this.hideCursor()
+
+        this.text = this.innerHTML
+
+        if (this.autoStart) {
+          this.start()
+        }
       }
 
       start () {
@@ -76,6 +88,8 @@
         this.clear()
 
         this._x = -1
+
+        this.dispatchEvent(new CustomEvent('type-start'))
 
         this.type()
       }
@@ -90,7 +104,9 @@
           if (!this._span) {
             this._newSpan()
           }
+
           this._x++
+
           if (this._x < this.text.length) {
             let c = this.text[this._x]
             if (c === ' ' && !_.isEmpty(this._span.innerHTML)) {
@@ -109,6 +125,14 @@
             if (!/\w/.test(c)) {
               delay = _.random(this.minSpeed, this.maxSpeed * (c === '.' ? 3 : 1))
             }
+
+            this.dispatchEvent(new CustomEvent('type-char', {
+              bubbles: true,
+              detail: {
+                char: c
+              }
+            }))
+
             setTimeout(() => {
               this.type()
             }, delay)
@@ -123,12 +147,15 @@
         clearInterval(this._cursorInterval)
         this._span = undefined
         this.hideCursor()
+
+        this.dispatchEvent(new CustomEvent('type-done'))
       }
 
       clear () {
         let spans = this.$.text.querySelectorAll('span')
-        while (spans.length) {
-          spans.removeChild(spans[0])
+        console.log(spans)
+        for (var span of spans) {
+          span.parentNode.removeChild(span)
         }
         this._span = undefined
       }

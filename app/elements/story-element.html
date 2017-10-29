@@ -2,6 +2,7 @@
 <link rel="import" href="type-element.html">
 <link rel="import" href="button-element.html">
 <link rel="import" href="image-element.html">
+<link rel="import" href="dialog-element.html">
 
 <dom-module id="story-element">
 
@@ -22,12 +23,18 @@
       <span>Story View</span>
     </div>
 
-    <button-element title="CLICK ME!"></button-element>
-
-    <image-element src="assets/images/HKS building.png"></image-element>
-
     <div class="content">
-      <type-element text="This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display."></type-element>
+
+      <button-element on-click="_onClick">CLICK ME!</button-element>
+
+      <dialog-element id="dialogTest" title="TITLE">
+        <type-element>This is content in a dialog</type-element>
+      </dialog-element>
+
+      <image-element src="assets/images/HKS building.png"></image-element>
+
+      <type-element auto-start>This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display.</type-element>
+
     </div>
 
   </template>
@@ -44,6 +51,10 @@
             value: () => {},
           },
         }
+      }
+
+      _onClick () {
+        this.$.dialogTest.open()
       }
 
     }

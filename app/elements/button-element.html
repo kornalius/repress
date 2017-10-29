@@ -5,19 +5,28 @@
   <template>
     <style include="app-theme">
       :host {
-        display: inline-flex;
+        cursor: pointer;
+        padding: .25em;
+        margin: .25em;
+        min-width: 4em;
+        border: 2px solid var(--night-blue-color);
+        background-color: var(--blue-grey-color);
+        color: var(--yellow-color);
+        transition: all 0.15s ease-out;
         @apply --button;
       }
       :host(.pressed) {
+        background-color: var(--sea-blue-color);
         @apply --button-pressed;
       }
       :host(.hover) {
+        color: var(--white-color);
         @apply --button-hover;
       }
     </style>
 
     <div class="layout horizontal center-center">
-      <span>[[title]]</span>
+      <span><slot></slot></span>
     </div>
 
   </template>
@@ -29,10 +38,6 @@
 
       static get properties() {
         return {
-          title: {
-            type: String,
-            value: 'Button',
-          },
         }
       }
 

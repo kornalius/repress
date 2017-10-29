@@ -1,0 +1,90 @@
+<link rel="import" href="theme.html">
+<link rel="import" href="button-element.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+
+<dom-module id="dialog-element">
+
+  <template>
+    <style include="app-theme">
+      :host {
+        --paper-dialog-background-color: #675db6;
+        --paper-dialog-color: #d5d5d5;
+        --paper-dialog: {
+          border: solid 2px var(--silver-color);
+          font: 18px TYPE;
+          font-weight: bold;
+          text-shadow: 0px 0px 6px rgba(213, 213, 213, 0.25);
+          user-select: none;
+        }
+        --paper-dialog-title: {
+          font: 18px TYPE;
+          font-weight: bold;
+          text-shadow: 0px 0px 6px rgba(213, 213, 213, 0.25);
+        }
+      }
+    </style>
+
+    <paper-dialog id="dialog" with-backdrop on-iron-overlay-opened="_onOpened">
+
+      <h2>[[title]]</h2>
+
+      <paper-dialog-scrollable class="layout vertical">
+
+        <slot id="content"></slot>
+
+      </paper-dialog-scrollable>
+
+      <div class="buttons">
+        <button-element dialog-dismiss>OK</button-element>
+      </div>
+
+    </paper-dialog>
+
+  </template>
+
+  <script>
+    class DialogElement extends Polymer.Element {
+
+      static get is() { return 'dialog-element'; }
+
+      static get properties () {
+        return {
+          title: {
+            type: String,
+          },
+        }
+      }
+
+      ready () {
+        super.ready()
+
+        this.dialog = this.$.dialog
+
+        this.addEventListener('type-char', this._onTypeChar);
+      }
+
+      open () {
+        this.dialog.open()
+      }
+
+      close () {
+        this.dialog.close()
+      }
+
+      _onOpened () {
+        _.map(this.$.content.assignedNodes(), el => {
+          if (el.tagName === 'TYPE-ELEMENT') {
+            el.start()
+          }
+        })
+      }
+
+      _onTypeChar (e) {
+        this.dialog.refit()
+      }
+    }
+
+    customElements.define(DialogElement.is, DialogElement);
+  </script>
+
+</dom-module>
