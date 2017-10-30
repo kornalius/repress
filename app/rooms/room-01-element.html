@@ -36,7 +36,7 @@
 
         <template is="dom-if" if="[[!outside]]">
 
-          <div class="layout horizontal">
+          <div class="layout vertical">
 
             <image-element src="assets/images/HKS entrance.png" areas="[[entranceAreas]]" on-exit="_onExit"></image-element>
 
@@ -76,7 +76,7 @@
           entranceAreas: {
             type: Array,
             value: () => [
-              { left: 0, top: 0, right: 260, bottom: 75, event: 'exit', hint: 'Exit', detail: {} },
+              { left: 0, top: 0, right: 315, bottom: 186, event: 'exit', hint: 'Exit', detail: {} },
             ]
           },
         }
