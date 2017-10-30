@@ -1,0 +1,44 @@
+<dom-module id="typo-styles">
+
+  <template>
+
+    <style>
+      .bold    { font-weight: 600; }
+      .italic  { font-style: italic; }
+      .caps {
+        text-transform: uppercase;
+        letter-spacing: .2em;
+      }
+
+      .align-left    { text-align: left; }
+      .align-center  { text-align: center; }
+      .align-right   { text-align: right; }
+      .align-justify { text-align: justify; }
+
+      .pre        { white-space: pre; }
+      .break-word { word-wrap: break-word; }
+      .no-wrap {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .truncate {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .small-text {
+        font-size: .7em;
+      }
+
+      .large-text {
+        font-size: 1.3em;
+      }
+    </style>
+
+  </template>
+
+</dom-module>

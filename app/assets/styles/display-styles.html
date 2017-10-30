@@ -1,0 +1,50 @@
+<dom-module id="display-styles">
+
+  <template>
+
+    <style>
+      .inline       { display: inline; }
+      .block        { display: block; }
+      .inline-block { display: inline-block; }
+
+      .overflow-hidden { overflow: hidden; }
+      .overflow-scroll { overflow: scroll; }
+      .overflow-auto   { overflow: auto; }
+
+      .clearfix:before,
+      .clearfix:after {
+        content: " ";
+        display: table;
+      }
+      .clearfix:after { clear: both; }
+
+      .hide {
+        position: absolute !important;
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+        /*clip: rect(1px, 1px, 1px, 1px);*/
+      }
+
+      .hidden { display: none !important; }
+
+      .scroll-horizontal {
+        overflow-x: scroll;
+        overflow-y: hidden;
+      }
+
+      .scroll-vertical {
+        overflow-x: hidden;
+        overflow-y: scroll;
+      }
+
+      .no-scrollbar::-webkit-scrollbar {
+        width: 0px;
+        height: 0px;
+        background: transparent;
+      }
+    </style>
+
+  </template>
+
+</dom-module>

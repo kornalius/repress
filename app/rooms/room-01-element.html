@@ -1,0 +1,104 @@
+<link rel="import" href="../elements/theme.html">
+<link rel="import" href="../elements/room-element.html">
+
+<dom-module id="room-01-element">
+
+  <template>
+    <style include="app-theme">
+      :host {
+        @apply --layout-vertical;
+      }
+      #room {
+      }
+    </style>
+
+    <room-element id="room" ="Wake Up">
+
+      <div class="layout vertical w100">
+
+        <button-element on-click="_onClick">CLICK ME!</button-element>
+
+        <dialog-element id="dialogTest" title="TEST DIALOG">
+          <type-element>This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display.</type-element>
+        </dialog-element>
+
+        <template is="dom-if" if="[[outside]]">
+
+          <div class="layout horizontal">
+
+            <image-element src="assets/images/HKS building.png" areas="[[outsideAreas]]" on-building="_onBuilding"></image-element>
+
+            <type-element auto-start>You are standing in front of a tall building.</type-element>
+
+          </div>
+
+        </template>
+
+        <template is="dom-if" if="[[!outside]]">
+
+          <div class="layout horizontal">
+
+            <image-element src="assets/images/HKS entrance.png" areas="[[entranceAreas]]" on-exit="_onExit"></image-element>
+
+            <type-element auto-start>You are now inside the building.</type-element>
+
+          </div>
+
+        </template>
+
+      </div>
+
+    </room-element>
+
+  </template>
+
+  <script>
+    class Room01Element extends Polymer.Element {
+
+      static get is() { return 'room-01-element'; }
+
+      static get properties () {
+        return {
+          data: {
+            type: Object,
+            value: () => {},
+          },
+          outside: {
+            type: Boolean,
+            value: true,
+          },
+          outsideAreas: {
+            type: Array,
+            value: () => [
+              { left: 130, top: 60, right: 260, bottom: 330, event: 'building', hint: 'Building', detail: {} },
+            ]
+          },
+          entranceAreas: {
+            type: Array,
+            value: () => [
+              { left: 0, top: 0, right: 260, bottom: 75, event: 'exit', hint: 'Exit', detail: {} },
+            ]
+          },
+        }
+      }
+
+      _onBuilding (e, detail) {
+        console.log('entering clicked', detail)
+        this.outside = false
+      }
+
+      _onExit (e, detail) {
+        console.log('exiting clicked', detail)
+        this.outside = true
+      }
+
+      _onClick () {
+        this.$.dialogTest.open()
+      }
+
+    }
+
+    customElements.define(Room01Element.is, Room01Element);
+  </script>
+
+</dom-module>

@@ -10,7 +10,7 @@
         --paper-dialog-background-color: #675db6;
         --paper-dialog-color: #d5d5d5;
         --paper-dialog: {
-          border: solid 2px var(--silver-color);
+          border: solid 3px var(--silver-color);
           font: 18px TYPE;
           font-weight: bold;
           text-shadow: 0px 0px 6px rgba(213, 213, 213, 0.25);
@@ -24,7 +24,7 @@
       }
     </style>
 
-    <paper-dialog id="dialog" with-backdrop on-iron-overlay-opened="_onOpened">
+    <paper-dialog id="dialog" with-backdrop on-iron-overlay-opened="_onOpened" on-iron-overlay-closed="_onClosed">
 
       <h2>[[title]]</h2>
 
@@ -55,12 +55,18 @@
         }
       }
 
-      ready () {
-        super.ready()
+      connectedCallback () {
+        super.connectedCallback()
 
         this.dialog = this.$.dialog
 
         this.addEventListener('type-char', this._onTypeChar);
+      }
+
+      disconnectedCallback () {
+        super.disconnectedCallback()
+
+        this.removeEventListener('type-char', this._onTypeChar);
       }
 
       open () {
@@ -71,11 +77,19 @@
         this.dialog.close()
       }
 
+      get typeElements () {
+        return _.filter(this.$.content.assignedNodes(), el => el.tagName === 'TYPE-ELEMENT')
+      }
+
       _onOpened () {
-        _.map(this.$.content.assignedNodes(), el => {
-          if (el.tagName === 'TYPE-ELEMENT') {
-            el.start()
-          }
+        _.each(this.typeElements, el => {
+          el.start()
+        })
+      }
+
+      _onClosed () {
+        _.each(this.typeElements, el => {
+          el.stop()
         })
       }
 

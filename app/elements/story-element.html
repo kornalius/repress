@@ -3,6 +3,8 @@
 <link rel="import" href="button-element.html">
 <link rel="import" href="image-element.html">
 <link rel="import" href="dialog-element.html">
+<link rel="import" href="room-element.html">
+<link rel="import" href="../rooms/room-01-element.html">
 
 <dom-module id="story-element">
 
@@ -20,20 +22,16 @@
     </style>
 
     <div class="title">
-      <span>Story View</span>
+      <span>[[label]]</span>
     </div>
 
     <div class="content">
 
-      <button-element on-click="_onClick">CLICK ME!</button-element>
+      <slot></slot>
 
-      <dialog-element id="dialogTest" title="TITLE">
-        <type-element>This is content in a dialog</type-element>
-      </dialog-element>
+      <room-01-element></room-01-element>
 
-      <image-element src="assets/images/HKS building.png"></image-element>
-
-      <type-element auto-start>This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display.</type-element>
+      <room-element label="Room 01-04"></room-element>
 
     </div>
 
@@ -46,6 +44,10 @@
 
       static get properties () {
         return {
+          label: {
+            type: String,
+            value: 'Story View',
+          },
           data: {
             type: Object,
             value: () => {},

@@ -1,15 +1,20 @@
 <link rel="import" href="theme.html">
+<link rel="import" href="hint-element.html">
 
 <dom-module id="image-element">
 
   <template>
     <style include="app-theme">
       :host {
+        /* @apply --layout-horizontal; */
+        /* @apply --layout-center-center; */
         margin: .25em;
       }
     </style>
 
     <img src="[[src]]"></img>
+
+    <div id="hints"></div>
 
   </template>
 
@@ -23,6 +28,10 @@
           src: {
             type: String,
           },
+          areas: {
+            type: Array,
+            value: () => []
+          },
         }
       }
 
@@ -30,16 +39,97 @@
         super.connectedCallback()
 
         this.addEventListener('mousedown', this._onMousedown)
+        this.addEventListener('mousemove', this._onMousemove)
+        this.addEventListener('mouseup', this._onMouseup)
+        this.addEventListener('mouseout', this._onMouseout)
       }
 
       disconnectedCallback () {
         super.disconnectedCallback()
 
         this.removeEventListener('mousedown', this._onMousedown)
+        this.removeEventListener('mousemove', this._onMousemove)
+        this.removeEventListener('mouseup', this._onMouseup)
+        this.removeEventListener('mouseout', this._onMouseout)
+      }
+
+      areasForLocation (x, y) {
+        let areas = []
+        for (let area of this.areas) {
+          if (x >= area.left && y >= area.top && x <= area.right && y <= area.bottom) {
+            areas.push(area)
+          }
+        }
+        return areas
+      }
+
+      get hints () {
+        return this.$.hints.querySelectorAll('hint-element')
+      }
+
+      hideHints (x, y) {
+        let areas = []
+        if (!_.isUndefined(x) && !_.isUndefined(y)) {
+          areas = this.areasForLocation(x, y)
+        }
+
+        _.each(this.areas, area => {
+          clearTimeout(area.timeout)
+          area.timeout = undefined
+
+          if (area.hint_el && !_.includes(areas, area)) {
+            area.hint_el.hide()
+            area.hint_visible = false
+          }
+        })
       }
 
       _onMousedown (e) {
-        console.log(e.clientX - e.currentTarget.offsetLeft, e.clientY - e.currentTarget.offsetTop)
+        let r = e.currentTarget.getBoundingClientRect()
+        let x = e.clientX - r.left
+        let y = e.clientY - r.top
+        console.log(x, y, r)
+      }
+
+      _onMousemove (e) {
+        let r = e.currentTarget.getBoundingClientRect()
+        let x = e.clientX - r.left
+        let y = e.clientY - r.top
+
+        this.hideHints(x, y)
+
+        let areas = this.areasForLocation(x, y)
+        for (let area of areas) {
+          if (!_.isEmpty(area.hint)) {
+            let w = (area.right - area.left) / 2
+            let h = (area.bottom - area.top) / 2
+            if (!area.hint_el) {
+              area.hint_el = document.createElement('hint-element')
+              this.$.hints.appendChild(area.hint_el)
+            }
+            clearTimeout(area.timeout)
+            area.timeout = setTimeout(() => {
+              area.hint_el.show(r.left + area.left + w, r.top + area.top + h, area.hint)
+              area.hint_visible = true
+            }, 250)
+          }
+        }
+      }
+
+      _onMouseout (e) {
+        this.hideHints()
+      }
+
+      _onMouseup (e) {
+        let r = e.currentTarget.getBoundingClientRect()
+        let x = e.clientX - r.left
+        let y = e.clientY - r.top
+
+        for (let area of this.areasForLocation(x, y)) {
+          if (!this.dispatchEvent(new CustomEvent(area.event, { detail: area.detail }))) {
+            break
+          }
+        }
       }
 
     }

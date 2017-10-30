@@ -1,0 +1,52 @@
+<link rel="import" href="theme.html">
+
+<dom-module id="hint-element">
+
+  <template>
+    <style include="app-theme">
+      :host {
+        @apply --hint;
+        opacity: 0;
+        transition: opacity .25s ease-in-out;
+      }
+    </style>
+
+    <div class="layout horizontal center-center">
+      <span><slot></slot></span>
+      <slot>[[text]]</slot>
+    </div>
+
+  </template>
+
+  <script>
+    class HintElement extends Polymer.Element {
+
+      static get is() { return 'hint-element'; }
+
+      static get properties() {
+        return {
+        }
+      }
+
+      show (x, y, text) {
+        this.style.opacity = '1'
+        if (!_.isEmpty(text)) {
+          this.text = text
+        }
+        setTimeout(() => {
+          let w = this.offsetWidth
+          let h = this.offsetHeight
+          this.style.left = x - w / 2 + 'px'
+          this.style.top = y - h / 2 + 'px'
+        }, 100)
+      }
+
+      hide () {
+        this.style.opacity = '0'
+      }
+    }
+
+    customElements.define(HintElement.is, HintElement);
+  </script>
+
+</dom-module>

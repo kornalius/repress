@@ -1,0 +1,72 @@
+<link rel="import" href="theme.html">
+
+<dom-module id="room-element">
+
+  <template>
+    <style include="app-theme">
+      :host {
+        @apply --container-box;
+      }
+      .title {
+        @apply --container-title;
+      }
+      .content {
+        @apply --container-content;
+        @apply --layout-horizontal;
+        background-color: var(--grey-color);
+      }
+    </style>
+
+    <div class="title">
+      <span>[[label]]</span>
+    </div>
+
+    <div class="content">
+      <slot></slot>
+    </div>
+
+  </template>
+
+  <script>
+    class RoomElement extends Polymer.Element {
+
+      static get is() { return 'room-element'; }
+
+      static get properties () {
+        return {
+          label: {
+            type: String,
+            value: 'Room View',
+          },
+          data: {
+            type: Object,
+            value: () => {},
+          },
+          music: {
+            type: String,
+            value: 'mindstorm',
+          },
+          imageAreas: {
+            type: Array,
+            value: () => []
+          }
+        }
+      }
+
+      connectedCallback () {
+        super.connectedCallback()
+
+        setTimeout(() => {
+          if (!_.isEmpty(this.music)) {
+            let id = Repress.sounds.play(this.music)
+            Repress.sounds.fade(this.music, 0, 1, 2500, id)
+          }
+        }, 100)
+      }
+
+    }
+
+    customElements.define(RoomElement.is, RoomElement);
+  </script>
+
+</dom-module>

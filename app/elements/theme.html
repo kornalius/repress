@@ -1,4 +1,10 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../assets/styles/border-styles.html">
+<link rel="import" href="../assets/styles/display-styles.html">
+<link rel="import" href="../assets/styles/position-styles.html">
+<link rel="import" href="../assets/styles/sizing-styles.html">
+<link rel="import" href="../assets/styles/spacing-styles.html">
+<link rel="import" href="../assets/styles/typo-styles.html">
 
 <style>
   html body {
@@ -15,7 +21,7 @@
 
   <template>
 
-    <style include="iron-flex iron-flex-alignment iron-positioning iron-flex-factors">
+    <style include="iron-flex iron-flex-alignment iron-positioning iron-flex-factors border-styles display-styles position-styles sizing-styles spacing-styles typo-styles">
       :host {
         --black-color: #222222;
         --white-color: #D5D5D5;
@@ -44,22 +50,23 @@
         --container-box: {
           margin: .25em;
           /* background-color: var(--grey-color); */
-          border: solid 2px var(--silver-color);
+          border: solid 3px var(--silver-color);
         };
 
         --container-title: {
           @apply --layout-horizontal;
           @apply --layout-center;
+          padding: 0 .25em;
           color: var(--yellow-color);
           background-color: var(--night-blue-color);
-          height: 24px;
+          height: 1.5em;
         };
 
         --container-content: {
           @apply --layout-vertical;
-          @apply --layout-flex;
-          height: 100%;
-          padding: .5em;
+          height: calc(100% - 36px);
+          padding: .25em;
+          overflow-y: auto;
         };
 
         --cursor: {
@@ -73,6 +80,15 @@
           -webkit-box-sizing: border-box;
           border-left: .5em solid;
           animation: typing 12s steps(13, end) infinite, blinking 1s step-end infinite;
+        }
+
+        --hint: {
+          display: block;
+          position: absolute;
+          padding: .15em .25em;
+          color: var(--yellow-color);
+          background-color: rgba(48, 52, 109, .75);
+          border: solid 3px var(--silver-color);
         }
 
         @-webkit-keyframes blinking {

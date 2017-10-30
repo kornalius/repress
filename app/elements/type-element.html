@@ -15,10 +15,11 @@
       }
       #cursor {
         background-color: var(--white-color);
-        height: .3em;
+        /* height: .3em; */
+        height: 1em;
         width: .6em;
         margin-left: -.4em;
-        margin-top: .7em;
+        /* margin-top: .7em; */
         transition: opacity 0.15s ease-out;
       }
       .visible {
@@ -69,8 +70,10 @@
         }
       }
 
-      connectedCallback () {
-        super.connectedCallback()
+      ready () {
+        super.ready()
+
+        this.clear()
 
         this.hideCursor()
 
@@ -81,11 +84,16 @@
         }
       }
 
+      connectedCallback () {
+        super.connectedCallback()
+      }
+
       start () {
         this.hideCursor()
         this._cursorInterval = setInterval(this.toggleCursor.bind(this), this.cursorBlinkSpeed)
 
         this.clear()
+        this._stopped = false
 
         this._x = -1
 
@@ -133,9 +141,11 @@
               }
             }))
 
-            setTimeout(() => {
-              this.type()
-            }, delay)
+            if (!this._stopped) {
+              setTimeout(() => {
+                this.type()
+              }, delay)
+            }
           }
           else {
             this.stop()
@@ -148,12 +158,13 @@
         this._span = undefined
         this.hideCursor()
 
+        this._stopped = true
+
         this.dispatchEvent(new CustomEvent('type-done'))
       }
 
       clear () {
         let spans = this.$.text.querySelectorAll('span')
-        console.log(spans)
         for (var span of spans) {
           span.parentNode.removeChild(span)
         }
