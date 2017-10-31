@@ -25,7 +25,7 @@
       <span>[[label]]</span>
     </div>
 
-    <div class="content">
+    <div id="content" class="content">
 
       <slot></slot>
 
@@ -55,8 +55,17 @@
         }
       }
 
-      _onClick () {
-        this.$.dialogTest.open()
+      get rooms () {
+        this.$.content.querySelectorAll('[room]')
+      }
+
+      goto (room) {
+        _.each(this.rooms, el => {
+          el.disabled = true
+        })
+
+        let el = document.createElement(room)
+        this.$.content.appendChild(el)
       }
 
     }

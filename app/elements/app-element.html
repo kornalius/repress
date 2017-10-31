@@ -127,6 +127,10 @@
             type: Object,
             value: () => {},
           },
+          mute: {
+            type: Boolean,
+            value: true,
+          }
         }
       }
 
@@ -140,6 +144,10 @@
           stats: this.$.stats,
           inventory: this.$.inventory,
         }
+      }
+
+      goto (room) {
+        this.$.story.goto(room)
       }
 
     }

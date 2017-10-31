@@ -63,6 +63,12 @@
             type: String,
             value: '',
           },
+          disabled: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true,
+            observer: '_disabledChanged'
+          },
           _currentText: {
             type: String,
             value: '',
@@ -88,23 +94,37 @@
         super.connectedCallback()
       }
 
+      _disabledChanged (newValue) {
+        if (newValue === false) {
+          this.pause()
+        }
+        else {
+          this.resume()
+        }
+      }
+
       start () {
         this.hideCursor()
         this._cursorInterval = setInterval(this.toggleCursor.bind(this), this.cursorBlinkSpeed)
 
         this.clear()
-        this._stopped = false
+        this._paused = false
 
         this._x = -1
 
         this.dispatchEvent(new CustomEvent('type-start'))
 
-        this.type()
+        setTimeout(() => this.type(), _.random(250, 1000))
       }
 
       _newSpan () {
         this._span = document.createElement('span')
         this.$.text.insertBefore(this._span, this.$.cursor)
+      }
+
+      _newLine () {
+        let el = document.createElement('div')
+        this.$.text.insertBefore(el, this.$.cursor)
       }
 
       type () {
@@ -117,7 +137,11 @@
 
           if (this._x < this.text.length) {
             let c = this.text[this._x]
-            if (c === ' ' && !_.isEmpty(this._span.innerHTML)) {
+            let punc = /[\.\,\s\^]/.test(c)
+            if (c === '^') {
+              this._newLine()
+            }
+            if ((c === ' ' || c === '^') && !_.isEmpty(this._span.innerHTML)) {
               this._newSpan()
             }
             else {
@@ -130,7 +154,7 @@
             Repress.sounds.volume(s, _.random(0.25, 0.75, true), id)
 
             let delay = 0
-            if (!/\w/.test(c)) {
+            if (punc) {
               delay = _.random(this.minSpeed, this.maxSpeed * (c === '.' ? 3 : 1))
             }
 
@@ -141,16 +165,25 @@
               }
             }))
 
-            if (!this._stopped) {
-              setTimeout(() => {
-                this.type()
-              }, delay)
+            if (!this._paused) {
+              setTimeout(() => this.type(), delay)
             }
           }
           else {
-            this.stop()
+            setTimeout(() => this.stop(), _.random(250, 750))
           }
         }, _.random(this.minSpeed, this.maxSpeed))
+      }
+
+      pause () {
+        this._paused = true
+        this.dispatchEvent(new CustomEvent('type-pause'))
+      }
+
+      resume () {
+        this._paused = false
+        this.type()
+        this.dispatchEvent(new CustomEvent('type-resume'))
       }
 
       stop () {
@@ -158,7 +191,7 @@
         this._span = undefined
         this.hideCursor()
 
-        this._stopped = true
+        this._paused = true
 
         this.dispatchEvent(new CustomEvent('type-done'))
       }

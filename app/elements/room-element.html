@@ -21,7 +21,7 @@
       <span>[[label]]</span>
     </div>
 
-    <div class="content">
+    <div id="content" class="content">
       <slot></slot>
     </div>
 
@@ -34,6 +34,17 @@
 
       static get properties () {
         return {
+          room: {
+            type: Boolean,
+            value: true,
+            reflectToAttribute: true,
+          },
+          disabled: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true,
+            observer: '_disabledChanged',
+          },
           label: {
             type: String,
             value: 'Room View',
@@ -44,12 +55,7 @@
           },
           music: {
             type: String,
-            value: 'mindstorm',
           },
-          imageAreas: {
-            type: Array,
-            value: () => []
-          }
         }
       }
 
@@ -64,6 +70,23 @@
         }, 100)
       }
 
+      get types () {
+        return this.$.content ? this.$.content.querySelectorAll('type-element') : []
+      }
+
+      get images () {
+        return this.$.content ? this.$.content.querySelectorAll('image-element') : []
+      }
+
+      get buttons () {
+        return this.$.content ? this.$.content.querySelectorAll('button-element') : []
+      }
+
+      _disabledChanged (newValue) {
+        _.each(_.concat(this.types, this.images, this.buttons), el => {
+          el.disabled = newValue
+        })
+      }
     }
 
     customElements.define(RoomElement.is, RoomElement);

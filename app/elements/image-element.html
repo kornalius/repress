@@ -32,6 +32,11 @@
             type: Array,
             value: () => []
           },
+          disabled: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true,
+          },
         }
       }
 
@@ -88,7 +93,7 @@
         let r = e.currentTarget.getBoundingClientRect()
         let x = e.clientX - r.left
         let y = e.clientY - r.top
-        console.log(x, y, r)
+        console.log(x, y)
       }
 
       _onMousemove (e) {
@@ -125,9 +130,11 @@
         let x = e.clientX - r.left
         let y = e.clientY - r.top
 
-        for (let area of this.areasForLocation(x, y)) {
-          if (!this.dispatchEvent(new CustomEvent(area.event, { detail: area.detail }))) {
-            break
+        if (!this.disabled) {
+          for (let area of this.areasForLocation(x, y)) {
+            if (!this.dispatchEvent(new CustomEvent(area.event, { detail: area.detail }))) {
+              break
+            }
           }
         }
       }

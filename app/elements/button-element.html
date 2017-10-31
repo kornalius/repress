@@ -15,13 +15,16 @@
         transition: all 0.15s ease-out;
         @apply --button;
       }
-      :host(.pressed) {
+      :host(.pressed:not([disabled])) {
         background-color: var(--sea-blue-color);
         @apply --button-pressed;
       }
-      :host(.hover) {
+      :host(.hover:not([disabled])) {
         color: var(--white-color);
         @apply --button-hover;
+      }
+      :host([disabled]) {
+        background-color: var(--night-blue-color);
       }
     </style>
 
@@ -38,6 +41,11 @@
 
       static get properties() {
         return {
+          disabled: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true,
+          },
         }
       }
 
@@ -60,11 +68,15 @@
       }
 
       _onMousedown (e) {
-        this.classList.add('pressed')
+        if (!this.disabled) {
+          this.classList.add('pressed')
+        }
       }
 
       _onMouseover (e) {
-        this.classList.add('hover')
+        if (!this.disabled) {
+          this.classList.add('hover')
+        }
       }
 
       _onMouseout (e) {
@@ -73,9 +85,11 @@
       }
 
       _onMouseup (e) {
-        if (this.classList.contains('pressed')) {
-          this.dispatchEvent(new MouseEvent('click'))
-          Repress.sounds.play('button')
+        if (!this.disabled) {
+          if (this.classList.contains('pressed')) {
+            this.dispatchEvent(new MouseEvent('button-click'))
+            Repress.sounds.play('button')
+          }
         }
         this.classList.remove('pressed')
       }

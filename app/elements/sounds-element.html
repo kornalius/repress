@@ -30,6 +30,12 @@
         for (let key in this.sounds) {
           this.sounds[key].handle = new Howl(this.sounds[key])
         }
+
+        setTimeout(() => {
+          if (Repress.app.mute) {
+            Howler.mute(true)
+          }
+        }, 100)
       }
 
       play (name) {
@@ -47,10 +53,10 @@
         }
       }
 
-      mute (name, id) {
+      mute (name, muted, id) {
         let s = _.get(this, ['sounds', name])
         if (s) {
-          s.handle.mute(id)
+          s.handle.mute(muted, id)
         }
       }
 

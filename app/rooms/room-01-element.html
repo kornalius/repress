@@ -1,5 +1,6 @@
 <link rel="import" href="../elements/theme.html">
 <link rel="import" href="../elements/room-element.html">
+<link rel="import" href="../rooms/room-02-element.html">
 
 <dom-module id="room-01-element">
 
@@ -12,41 +13,33 @@
       }
     </style>
 
-    <room-element id="room" ="Wake Up">
+    <room-element id="room" label="Wake Up" music="mindstorm">
 
-      <div class="layout vertical w100">
+      <template is="dom-if" if="[[!tattoo]]">
 
-        <button-element on-click="_onClick">CLICK ME!</button-element>
+        <div class="layout vertical">
 
-        <dialog-element id="dialogTest" title="TEST DIALOG">
-          <type-element>This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display. This will be a typewriter style display.</type-element>
-        </dialog-element>
+          <image-element src="assets/images/dead woman.png" areas="[[girlAreas]]" on-tattoo="_onTattoo"></image-element>
 
-        <template is="dom-if" if="[[outside]]">
+          <type-element auto-start>You wake up feeling dizzy as hell. Your stomach is burning like a volcano. Your vision is troubled and your feet are soft as rubber. Next to you lies a woman, who, at first sight, seem to be sleeping but you are not a rookie anymore and know too well that she is not dreaming of your sexual prowesses from last night.</type-element>
 
-          <div class="layout horizontal">
+        </div>
 
-            <image-element src="assets/images/HKS building.png" areas="[[outsideAreas]]" on-building="_onBuilding"></image-element>
+      </template>
 
-            <type-element auto-start>You are standing in front of a tall building.</type-element>
+      <template is="dom-if" if="[[tattoo]]">
 
-          </div>
+        <div class="layout vertical">
 
-        </template>
+          <image-element src="assets/images/dead woman tattoo.png" areas="[[tattooAreas]]" on-exit="_onExit"></image-element>
 
-        <template is="dom-if" if="[[!outside]]">
+          <type-element auto-start>The woman's tattoo really^seems strange to you. Who, in their right mind, would get a geometrical tattoo of this nature on its arm? It definitely looks like some sort of company logo and, as a matter of fact, you recognize it. It's from a company called HKS, a multi national corporation, which happens to have its headquarters right here in this very city, which deals with biogenetics.</type-element>
 
-          <div class="layout vertical">
+          <button-element on-button-click="_onGoto">GOTO ROOM</button-element>
 
-            <image-element src="assets/images/HKS entrance.png" areas="[[entranceAreas]]" on-exit="_onExit"></image-element>
+        </div>
 
-            <type-element auto-start>You are now inside the building.</type-element>
-
-          </div>
-
-        </template>
-
-      </div>
+      </template>
 
     </room-element>
 
@@ -63,37 +56,35 @@
             type: Object,
             value: () => {},
           },
-          outside: {
+          tattoo: {
             type: Boolean,
-            value: true,
+            value: false,
           },
-          outsideAreas: {
+          girlAreas: {
             type: Array,
             value: () => [
-              { left: 130, top: 60, right: 260, bottom: 330, event: 'building', hint: 'Building', detail: {} },
+              { left: 330, top: 0, right: 520, bottom: 200, event: 'tattoo', hint: 'Tattoo', detail: {} },
             ]
           },
-          entranceAreas: {
+          tattooAreas: {
             type: Array,
             value: () => [
-              { left: 0, top: 0, right: 315, bottom: 186, event: 'exit', hint: 'Exit', detail: {} },
+              { left: 0, top: 0, right: 640, bottom: 480, event: 'exit', hint: 'Exit', detail: {} },
             ]
           },
         }
       }
 
-      _onBuilding (e, detail) {
-        console.log('entering clicked', detail)
-        this.outside = false
+      _onTattoo (e, detail) {
+        this.tattoo = true
       }
 
       _onExit (e, detail) {
-        console.log('exiting clicked', detail)
-        this.outside = true
+        this.tattoo = false
       }
 
-      _onClick () {
-        this.$.dialogTest.open()
+      _onGoto () {
+        Repress.app.goto('room-02-element')
       }
 
     }
