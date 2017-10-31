@@ -3,8 +3,8 @@
 <link rel="import" href="button-element.html">
 <link rel="import" href="image-element.html">
 <link rel="import" href="dialog-element.html">
-<link rel="import" href="room-element.html">
-<link rel="import" href="../rooms/room-01-element.html">
+<link rel="import" href="items-element.html">
+<link rel="import" href="text-element.html">
 
 <dom-module id="story-element">
 
@@ -13,25 +13,35 @@
       :host {
         @apply --container-box;
       }
-      .title {
+      #title {
         @apply --container-title;
       }
-      .content {
+      #content {
         @apply --container-content;
+      }
+      #image {
+        width: 640px;
+        height: 400px;
+      }
+      #items {
+        width: 640px;
+        height: 80px;
+      }
+      #text {
+        width: 640px;
+        height: 320px;
       }
     </style>
 
-    <div class="title">
-      <span>[[label]]</span>
-    </div>
+    <div id="title">[[label]]</div>
 
-    <div id="content" class="content">
+    <div id="content">
 
-      <slot></slot>
+      <image-element id="image" areas="[[areas]]" on-image-area="_onImageClick"></image-element>
 
-      <room-01-element></room-01-element>
+      <items-element id="items" items="[[items]]"></items-element>
 
-      <room-element label="Room 01-04"></room-element>
+      <text-element id="text"></text-element>
 
     </div>
 
@@ -48,24 +58,161 @@
             type: String,
             value: 'Story View',
           },
-          data: {
+          image: {
+            type: String,
+            value: '',
+            observer: '_imageChanged',
+          },
+          areas: {
+            type: Array,
+            value: () => [],
+            observer: '_areasChanged',
+          },
+          music: {
+            type: String,
+            value: '',
+            observer: '_musicChanged',
+          },
+          items: {
+            type: Array,
+            value: () => [],
+            observer: '_itemsChanged',
+          },
+          rooms: {
             type: Object,
             value: () => {},
+            observer: '_roomsChanged',
           },
         }
       }
 
-      get rooms () {
-        this.$.content.querySelectorAll('[room]')
+      ready () {
+        super.ready()
+
+        this.rooms = {
+          'dead-woman': {
+            image: 'dead woman',
+            describe: 'You wake up feeling dizzy as hell. Your stomach is burning like a volcano. Your vision is troubled and your feet are soft as rubber. Next to you lies a woman, who, at first sight, seem to be sleeping but you are not a rookie anymore and know too well that she is not dreaming of your sexual prowesses from last night.',
+            text: 'You see a dead woman in your bed.',
+            areas: [
+              {
+                hint: 'Tattoo',
+                left: 330, top: 0, right: 520, bottom: 200,
+                goto: 'dead-woman-tattoo'
+              },
+            ],
+          },
+
+          'dead-woman-tattoo': {
+            image: 'dead woman tattoo',
+            describe: 'The woman\'s tattoo really^seems strange to you. Who, in their right mind, would get a geometrical tattoo of this nature on its arm? It definitely looks like some sort of company logo and, as a matter of fact, you recognize it. It\'s from a company called HKS, a multi national corporation, which happens to have its headquarters right here in this very city, which deals with biogenetics.',
+            text: '',
+            areas: [
+              {
+                hint: 'Exit',
+                left: 0, top: 0, right: 640, bottom: 480,
+                goto: 'dead-woman',
+              },
+            ],
+          },
+        }
+
+        setTimeout(() => {
+          this.goto('dead-woman')
+        }, 100)
       }
 
-      goto (room) {
-        _.each(this.rooms, el => {
-          el.disabled = true
-        })
+      _onImageClick (e, detail) {
+        let goto = _.get(detail, 'goto')
+        if (!_.isEmpty(goto) && this.rooms[goto]) {
+          this.goto(goto)
+        }
+      }
 
-        let el = document.createElement(room)
-        this.$.content.appendChild(el)
+      _itemsChanged (newValue) {
+      }
+
+      _imageChanged (newValue) {
+        if (!_.isEmpty(newValue)) {
+          this.$.image.src = 'assets/images/' + newValue + '.png'
+          this.$.image.areas = []
+        }
+      }
+
+      _areasChanged (newValue) {
+        this.$.image.areas = newValue
+      }
+
+      _roomsChanged (newValue, oldValue) {
+      }
+
+      _musicChanged (newValue, oldValue) {
+        setTimeout(() => {
+          if (!_.isEmpty(oldValue)) {
+            Repress.sounds.fade(oldValue, 1, 0, 2500)
+          }
+          if (!_.isEmpty(newValue)) {
+            Repress.sounds.play(newValue)
+            Repress.sounds.fade(newValue, 0, 1, 2500)
+          }
+        }, 100)
+      }
+
+      _disabledChanged (newValue) {
+        _.each(_.concat(this.$.image, this.$.text, this.$.items), el => {
+          el.disabled = newValue
+        })
+      }
+
+      goto (def) {
+        if (_.isString(def)) {
+          def = this.rooms[def]
+        }
+
+        if (!def) {
+          return false
+        }
+
+        let state = _.get(def, 'state', {})
+
+        let music = _.get(def, 'music', '')
+        if (!_.isEmpty(music)) {
+          this.music = music
+        }
+
+        let items = _.get(def, 'items')
+        if (_.isArray(items)) {
+          this.items = items
+        }
+
+        let image = _.get(def, 'image', '')
+        let areas = _.get(def, 'areas', [])
+        if (!_.isEmpty(image)) {
+          this.image = image
+          this.areas = areas
+        }
+
+        let describe = _.get(def, 'describe', '')
+        if (!_.isEmpty(describe) && !state.visited) {
+          this.write(describe)
+        }
+
+        let text = _.get(def, 'text', '')
+        if (!_.isEmpty(text) && state.visited) {
+          this.write(text)
+        }
+
+        def.state = _.extend(state, { visited: true })
+
+        return true
+      }
+
+      write (str) {
+        _.each(this.$.text.$.content.querySelectorAll('type-element'), el => el.finish())
+        let t = document.createElement('type-element')
+        t.text = str
+        t.autoStart = true
+        this.$.text.$.content.appendChild(t)
       }
 
     }

@@ -1,0 +1,68 @@
+<link rel="import" href="theme.html">
+
+<dom-module id="items-element">
+
+  <template>
+    <style include="app-theme">
+      :host {
+        @apply --container-box;
+      }
+      #title {
+        @apply --container-title;
+      }
+      #content {
+        @apply --container-content;
+      }
+    </style>
+
+    <div id="title">[[label]]</div>
+
+    <div id="content">
+
+      <template is="dom-repeat" items="[[items]]">
+
+        <item-element item="[[item]]"></item-element>
+
+      </template>
+
+    </div>
+
+  </template>
+
+  <script>
+    class ItemsElement extends Polymer.Element {
+
+      static get is() { return 'items-element'; }
+
+      static get properties () {
+        return {
+          label: {
+            type: String,
+            value: 'Items View',
+          },
+          items: {
+            type: Array,
+            value: () => [],
+            observer: '_itemsChanged',
+          },
+          disabled: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true,
+            observer: '_disabledChanged',
+          },
+        }
+      }
+
+      _disabledChanged (newValue) {
+      }
+
+      _itemsChanged (newValue, oldValue) {
+      }
+
+    }
+
+    customElements.define(ItemsElement.is, ItemsElement);
+  </script>
+
+</dom-module>

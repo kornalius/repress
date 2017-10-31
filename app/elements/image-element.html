@@ -6,8 +6,6 @@
   <template>
     <style include="app-theme">
       :host {
-        /* @apply --layout-horizontal; */
-        /* @apply --layout-center-center; */
         margin: .25em;
       }
     </style>
@@ -27,15 +25,19 @@
         return {
           src: {
             type: String,
+            value: '',
+            observer: '_srcChanged',
           },
           areas: {
             type: Array,
-            value: () => []
+            value: () => [],
+            observer: '_areasChanged',
           },
           disabled: {
             type: Boolean,
             value: false,
             reflectToAttribute: true,
+            observer: '_disabledChanged',
           },
         }
       }
@@ -58,6 +60,16 @@
         this.removeEventListener('mouseout', this._onMouseout)
       }
 
+      _srcChanged () {
+      }
+
+      _areasChanged (newValue, oldValue) {
+        this.clearHints(oldValue)
+      }
+
+      _disabledChanged () {
+      }
+
       areasForLocation (x, y) {
         let areas = []
         for (let area of this.areas) {
@@ -73,18 +85,30 @@
       }
 
       hideHints (x, y) {
-        let areas = []
+        let r = []
         if (!_.isUndefined(x) && !_.isUndefined(y)) {
-          areas = this.areasForLocation(x, y)
+          r = this.areasForLocation(x, y)
         }
 
         _.each(this.areas, area => {
           clearTimeout(area.timeout)
           area.timeout = undefined
 
-          if (area.hint_el && !_.includes(areas, area)) {
+          if (area.hint_el && !_.includes(r, area)) {
             area.hint_el.hide()
             area.hint_visible = false
+          }
+        })
+      }
+
+      clearHints (areas = this.areas) {
+        _.each(areas, area => {
+          clearTimeout(area.timeout)
+          area.timeout = undefined
+
+          if (area.hint_el) {
+            area.hint_visible = false
+            area.hint_el.remove()
           }
         })
       }
@@ -132,7 +156,11 @@
 
         if (!this.disabled) {
           for (let area of this.areasForLocation(x, y)) {
-            if (!this.dispatchEvent(new CustomEvent(area.event, { detail: area.detail }))) {
+            let event = new CustomEvent('image-area', {
+              bubbles: true,
+              detail: area,
+            })
+            if (!this.dispatchEvent(event)) {
               break
             }
           }

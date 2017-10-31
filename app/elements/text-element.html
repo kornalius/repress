@@ -1,0 +1,52 @@
+<link rel="import" href="theme.html">
+<link rel="import" href="type-element.html">
+
+<dom-module id="text-element">
+
+  <template>
+    <style include="app-theme">
+      :host {
+        @apply --container-box;
+      }
+      #title {
+        @apply --container-title;
+      }
+      #content {
+        @apply --container-content;
+        height: calc(100% - 2em);
+        overflow-y: auto;
+      }
+    </style>
+
+    <div id="title">[[label]]</div>
+
+    <div id="content"></div>
+
+  </template>
+
+  <script>
+    class TextElement extends Polymer.Element {
+
+      static get is() { return 'text-element'; }
+
+      static get properties () {
+        return {
+          label: {
+            type: String,
+            value: 'Text View',
+          },
+        }
+      }
+
+      write (str) {
+        let t = document.createElement('type-element')
+        t.text = str
+        this.$.content.appendChild(t)
+      }
+
+    }
+
+    customElements.define(TextElement.is, TextElement);
+  </script>
+
+</dom-module>

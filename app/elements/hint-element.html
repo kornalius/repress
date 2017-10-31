@@ -44,6 +44,15 @@
       hide () {
         this.style.opacity = '0'
       }
+
+      remove () {
+        this.hide()
+        if (this.parentNode) {
+          setTimeout(() => {
+            this.parentNode.removeChild(this)
+          }, 250)
+        }
+      }
     }
 
     customElements.define(HintElement.is, HintElement);
