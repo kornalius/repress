@@ -1,0 +1,56 @@
+<link rel="import" href="theme.html">
+<link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+
+<dom-module id="menu-element">
+
+  <template>
+    <style include="app-theme">
+      :host {
+      }
+    </style>
+
+    <paper-menu-button>
+
+      <template is="dom-repeat" items="[[items]]">
+
+        <paper-menu-item>
+          <image-element img="[[item.img]]"></image-element>
+          <span>[[item.label]]</span>
+        </paper-menu-item>
+
+      </template>
+
+    </paper-menu-button>
+
+  </template>
+
+  <script>
+    class MenuElement extends Polymer.Element {
+
+      static get is() { return 'menu-element'; }
+
+      static get properties () {
+        return {
+          disabled: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true,
+            observer: '_disabledChanged',
+          },
+          items: {
+            type: Array,
+            value: () => [],
+          },
+        }
+      }
+
+      _disabledChanged (newValue) {
+      }
+
+    }
+
+    customElements.define(MenuElement.is, MenuElement);
+  </script>
+
+</dom-module>

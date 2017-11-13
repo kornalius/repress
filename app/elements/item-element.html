@@ -1,0 +1,49 @@
+<link rel="import" href="theme.html">
+
+<dom-module id="item-element">
+
+  <template>
+    <style include="app-theme">
+      :host {
+      }
+    </style>
+
+  </template>
+
+  <script>
+    class ItemElement extends Polymer.Element {
+
+      static get is() { return 'item-element'; }
+
+      static get properties () {
+        return {
+          disabled: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true,
+            observer: '_disabledChanged',
+          },
+          label: {
+            type: String,
+            value: '',
+          },
+          img: {
+            type: String,
+            value: '',
+          },
+          hint: {
+            type: String,
+            value: '',
+          },
+        }
+      }
+
+      _disabledChanged (newValue) {
+      }
+
+    }
+
+    customElements.define(ItemElement.is, ItemElement);
+  </script>
+
+</dom-module>

@@ -1,4 +1,5 @@
 <link rel="import" href="theme.html">
+<link rel="import" href="stat-element.html">
 
 <dom-module id="stats-element">
 
@@ -19,7 +20,11 @@
       <span>Stats View</span>
     </div>
 
-    <div class="content"></div>
+    <template is="dom-repeat" items="[[stats]]">
+
+      <stat-element label="[[item.label]]" img="[[item.img]]" value="[[item.value]]" min="[[item.min]]" max="[[item.max]]" show-progress show-max></stat-element>
+
+    </template>
 
   </template>
 
@@ -30,9 +35,9 @@
 
       static get properties () {
         return {
-          data: {
-            type: Object,
-            value: () => {},
+          stats: {
+            type: Array,
+            value: () => [],
           },
         }
       }

@@ -1,0 +1,76 @@
+<link rel="import" href="theme.html">
+
+<dom-module id="slot-element">
+
+  <template>
+    <style include="app-theme">
+      :host {
+        @apply --layout-vertical;
+        @apply --layout-center;
+      }
+      :host([border="full"]) {
+        border-radius: 4px;
+        padding: 2px;
+        border: 2px solid  var(--black-color);
+      }
+      :host([border="dashed"]) {
+        border-radius: 4px;
+        padding: 2px;
+        border: 2px dashed  var(--black-color);
+      }
+    </style>
+
+    <slot></slot>
+
+    <slot>
+
+      <image-element class="layout horizontal center" src="[[img]]"></image-element>
+
+      <span id="label" class="layout horizontal center">[[label]]</span>
+
+    </slot>
+
+  </template>
+
+  <script>
+    class SlotElement extends Polymer.Element {
+
+      static get is() { return 'slot-element'; }
+
+      static get properties () {
+        return {
+          disabled: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true,
+            observer: '_disabledChanged',
+          },
+          label: {
+            type: String,
+            value: '',
+          },
+          img: {
+            type: String,
+            value: '',
+          },
+          hint: {
+            type: String,
+            value: '',
+          },
+          border: {
+            type: String,
+            value: 'none',
+            reflectToAttribute: true,
+          },
+        }
+      }
+
+      _disabledChanged (newValue) {
+      }
+
+    }
+
+    customElements.define(SlotElement.is, SlotElement);
+  </script>
+
+</dom-module>

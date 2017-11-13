@@ -1,0 +1,78 @@
+<link rel="import" href="theme.html">
+<!-- <link rel="import" href="progress-element.html"> -->
+
+<dom-module id="stat-element">
+
+  <template>
+    <style include="app-theme">
+      :host {
+      }
+    </style>
+
+    <div class="layout horizontal">
+
+      <image-element disabled="[[disabled]]" src="[[img]]"></image-element>
+
+      <div class="layout vertical">
+
+        <div class="layout horizontal">
+          <span id="value">[[value]]</span>
+          <span id="max" hidden$="[[!showMax]]"> / [[max]]</span>
+        </div>
+
+        <!-- <progress-element hidden$="[[!showProgress]]"></progress-element> -->
+
+      </div>
+
+    </div>
+
+  </template>
+
+  <script>
+    class StatElement extends Polymer.Element {
+
+      static get is() { return 'stat-element'; }
+
+      static get properties () {
+        return {
+          label: {
+            type: String,
+            value: '',
+          },
+          img: {
+            type: String,
+            value: '',
+          },
+          hint: {
+            type: String,
+            value: '',
+          },
+          value: {
+            type: Number,
+            value: 0,
+          },
+          min: {
+            type: Number,
+            value: 0,
+          },
+          max: {
+            type: Number,
+            value: 0,
+          },
+          showProgress: {
+            type: Boolean,
+            value: false,
+          },
+          showMax: {
+            type: Boolean,
+            value: false,
+          },
+        }
+      }
+
+    }
+
+    customElements.define(StatElement.is, StatElement);
+  </script>
+
+</dom-module>
