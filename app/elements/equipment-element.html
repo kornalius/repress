@@ -1,0 +1,171 @@
+<link rel="import" href="theme.html">
+<link rel="import" href="slot-element.html">
+<link rel="import" href="item-element.html">
+
+<dom-module id="equipment-element">
+
+  <template>
+    <style include="app-theme">
+      :host {
+        @apply --container-box;
+      }
+      .title {
+        @apply --container-title;
+      }
+      .content {
+        @apply --container-content;
+      }
+    </style>
+
+    <div class="title">
+      <span>[[label]]</span>
+    </div>
+
+    <div class="content">
+
+      <div class="layout horizontal center">
+
+        <slot-element type="head" hint="Head" img="head">
+          <item-element name="[[head.name]]" label="[[head.label]]" hint="[[head.hint]]" img="[[head.img]]"></item-element>
+        </slot-element>
+
+      </div>
+
+      <div class="layout horizontal">
+
+        <div class="layout vertical">
+
+          <slot-element type="left-arm" hint="Left Arm" img="left arm">
+            <item-element name="[[leftArm.name]]" label="[[leftArm.label]]" hint="[[leftArm.hint]]" img="[[leftArm.img]]"></item-element>
+          </slot-element>
+
+          <slot-element type="left-hand" hint="Left Hand" img="right arm">
+            <item-element name="[[leftHand.name]]" label="[[leftHand.label]]" hint="[[leftHand.hint]]" img="[[leftHand.img]]"></item-element>
+          </slot-element>
+
+        </div>
+
+        <slot-element type="torso" hint="Torso" img="torso">
+          <item-element name="[[torso.name]]" label="[[torso.label]]" hint="[[torso.hint]]" img="[[torso.img]]"></item-element>
+        </slot-element>
+
+        <div class="layout vertical">
+
+          <slot-element type="right-arm" hint="Right Arm" img="right arm">
+            <item-element name="[[rightArm.name]]" label="[[rightArm.label]]" hint="[[rightArm.hint]]" img="[[rightArm.img]]"></item-element>
+          </slot-element>
+
+          <slot-element type="right-hand" hint="Right Hand" img="right hand">
+            <item-element name="[[rightHand.name]]" label="[[rightHand.label]]" hint="[[rightHand.hint]]" img="[[rightHand.img]]"></item-element>
+          </slot-element>
+
+        </div>
+
+      </div>
+
+      <div class="layout horizontal">
+
+        <slot-element type="left-leg" hint="Left Leg" img="left leg">
+          <item-element name="[[leftLeg.name]]" label="[[leftLeg.label]]" hint="[[leftLeg.hint]]" img="[[leftLeg.img]]"></item-element>
+        </slot-element>
+
+        <slot-element type="right-leg" hint="Right Leg" img="right leg">
+          <item-element name="[[rightLeg.name]]" label="[[rightLeg.label]]" hint="[[rightLeg.hint]]" img="[[rightLeg.img]]"></item-element>
+        </slot-element>
+
+      </div>
+
+      <div class="layout horizontal">
+
+        <slot-element type="left-foot" hint="Left Foot" img="left foot">
+          <item-element name="[[leftFoot.name]]" label="[[leftFoot.label]]" hint="[[leftFoot.hint]]" img="[[leftFoot.img]]"></item-element>
+        </slot-element>
+
+        <slot-element type="right-foot" hint="Right Foot" img="right foot">
+          <item-element name="[[rightFoot.name]]" label="[[rightFoot.label]]" hint="[[rightFoot.hint]]" img="[[rightFoot.img]]"></item-element>
+        </slot-element>
+
+      </div>
+
+    </div>
+
+  </template>
+
+  <script>
+    class EquipmentElement extends Polymer.Element {
+
+      static get is() { return 'equipment-element'; }
+
+      static get properties () {
+        return {
+          label: {
+            type: String,
+            value: 'Equipment View',
+          },
+          items: {
+            type: Array,
+            value: () => [],
+          },
+          head: {
+            type: Object,
+            value: () => {},
+            computed: '_equippedItemForType(items, "head")'
+          },
+          torso: {
+            type: Object,
+            value: () => {},
+            computed: '_equippedItemForType(items, "torso")'
+          },
+          leftArm: {
+            type: Object,
+            value: () => {},
+            computed: '_equippedItemForType(items, "left-arm")'
+          },
+          rightArm: {
+            type: Object,
+            value: () => {},
+            computed: '_equippedItemForType(items, "right-arm")'
+          },
+          leftHand: {
+            type: Object,
+            value: () => {},
+            computed: '_equippedItemForType(items, "left-hand")'
+          },
+          rightHand: {
+            type: Object,
+            value: () => {},
+            computed: '_equippedItemForType(items, "right-hand")'
+          },
+          leftLeg: {
+            type: Object,
+            value: () => {},
+            computed: '_equippedItemForType(items, "left-leg")'
+          },
+          rightLeg: {
+            type: Object,
+            value: () => {},
+            computed: '_equippedItemForType(items, "right-leg")'
+          },
+          leftFoot: {
+            type: Object,
+            value: () => {},
+            computed: '_equippedItemForType(items, "left-foot")'
+          },
+          rightFoot: {
+            type: Object,
+            value: () => {},
+            computed: '_equippedItemForType(items, "right-foot")'
+          },
+        }
+      }
+
+      _equippedItemForType (type) {
+        return _.find(this.items, { type, equipped: true })
+      }
+
+    }
+
+    customElements.define(EquipmentElement.is, EquipmentElement);
+  </script>
+
+</dom-module>

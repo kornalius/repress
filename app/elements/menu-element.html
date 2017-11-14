@@ -26,26 +26,17 @@
   </template>
 
   <script>
-    class MenuElement extends Polymer.Element {
+    class MenuElement extends Repress.DisabledMixin(Polymer.Element) {
 
       static get is() { return 'menu-element'; }
 
       static get properties () {
         return {
-          disabled: {
-            type: Boolean,
-            value: false,
-            reflectToAttribute: true,
-            observer: '_disabledChanged',
-          },
           items: {
             type: Array,
             value: () => [],
           },
         }
-      }
-
-      _disabledChanged (newValue) {
       }
 
     }

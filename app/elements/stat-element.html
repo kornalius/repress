@@ -1,5 +1,7 @@
 <link rel="import" href="theme.html">
 <!-- <link rel="import" href="progress-element.html"> -->
+<link rel="import" href="image-element.html">
+<link rel="import" href="hint-element.html">
 
 <dom-module id="stat-element">
 
@@ -8,6 +10,8 @@
       :host {
       }
     </style>
+
+    <hint-element text="[[hint]]"></hint-element>
 
     <div class="layout horizontal">
 
@@ -29,7 +33,7 @@
   </template>
 
   <script>
-    class StatElement extends Polymer.Element {
+    class StatElement extends Repress.DisabledMixin(Polymer.Element) {
 
       static get is() { return 'stat-element'; }
 

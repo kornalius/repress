@@ -17,7 +17,7 @@
   </template>
 
   <script>
-    class ImageElement extends Polymer.Element {
+    class ImageElement extends Repress.DisabledMixin(Polymer.Element) {
 
       static get is() { return 'image-element'; }
 
@@ -33,11 +33,9 @@
             value: () => [],
             observer: '_areasChanged',
           },
-          disabled: {
+          debugMode: {
             type: Boolean,
-            value: false,
-            reflectToAttribute: true,
-            observer: '_disabledChanged',
+            value: true,
           },
         }
       }
@@ -117,7 +115,9 @@
         let r = e.currentTarget.getBoundingClientRect()
         let x = e.clientX - r.left
         let y = e.clientY - r.top
-        console.log(x, y)
+        if (this.debugMode) {
+          console.log(x, y)
+        }
       }
 
       _onMousemove (e) {

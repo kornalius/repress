@@ -48,7 +48,7 @@
   </template>
 
   <script>
-    class StoryElement extends Polymer.Element {
+    class StoryElement extends Repress.ItemsMixin(Polymer.Element) {
 
       static get is() { return 'story-element'; }
 
@@ -72,11 +72,6 @@
             type: String,
             value: '',
             observer: '_musicChanged',
-          },
-          items: {
-            type: Array,
-            value: () => [],
-            observer: '_itemsChanged',
           },
           rooms: {
             type: Object,
@@ -129,9 +124,6 @@
         }
       }
 
-      _itemsChanged (newValue) {
-      }
-
       _imageChanged (newValue) {
         if (!_.isEmpty(newValue)) {
           this.$.image.src = 'assets/images/' + newValue + '.png'
@@ -177,19 +169,19 @@
 
         let music = _.get(def, 'music', '')
         if (!_.isEmpty(music)) {
-          this.music = music
+          this.set('music', music)
         }
 
         let items = _.get(def, 'items')
         if (_.isArray(items)) {
-          this.items = items
+          this.set('items', items)
         }
 
         let image = _.get(def, 'image', '')
         let areas = _.get(def, 'areas', [])
         if (!_.isEmpty(image)) {
-          this.image = image
-          this.areas = areas
+          this.set('image', image)
+          this.set('areas', areas)
         }
 
         let describe = _.get(def, 'describe', '')
@@ -213,6 +205,10 @@
         t.text = str
         t.autoStart = true
         this.$.text.$.content.appendChild(t)
+      }
+
+      menu (items) {
+
       }
 
     }

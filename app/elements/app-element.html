@@ -3,6 +3,7 @@
 <link rel="import" href="sounds-element.html">
 <link rel="import" href="story-element.html">
 <link rel="import" href="stats-element.html">
+<link rel="import" href="equipment-element.html">
 <link rel="import" href="inventory-element.html">
 
 <dom-module id="app-element">
@@ -109,9 +110,11 @@
 
       <div class="layout vertical flex-4">
 
-        <stats-element id="stats" class="flex-4" stats="[[player.stats]]"></stats-element>
+        <stats-element id="stats" class="flex-3" stats="[[player.stats]]"></stats-element>
 
-        <inventory-element id="inventory" class="flex-8"></inventory-element>
+        <equipment-element id="equipment" class="flex-3" items="[[player.items]]"></equipment-element>
+
+        <inventory-element id="inventory" class="flex-5" items="[[player.items]]"></inventory-element>
 
       </div>
 
@@ -141,21 +144,25 @@
         return this.$.player
       }
 
+      get story () {
+        return this.$.story
+      }
+
       ready () {
         super.ready()
 
-        window.Repress = {
+        _.extend(window.Repress, {
           app: this,
           player: this.$.player,
           sounds: this.$.sounds,
           story: this.$.story,
           stats: this.$.stats,
           inventory: this.$.inventory,
-        }
+        })
       }
 
       goto (room) {
-        this.$.story.goto(room)
+        this.story.goto(room)
       }
 
     }

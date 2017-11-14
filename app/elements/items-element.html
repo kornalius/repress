@@ -30,7 +30,7 @@
   </template>
 
   <script>
-    class ItemsElement extends Polymer.Element {
+    class ItemsElement extends Repress.DisabledMixin(Polymer.Element) {
 
       static get is() { return 'items-element'; }
 
@@ -43,21 +43,8 @@
           items: {
             type: Array,
             value: () => [],
-            observer: '_itemsChanged',
-          },
-          disabled: {
-            type: Boolean,
-            value: false,
-            reflectToAttribute: true,
-            observer: '_disabledChanged',
           },
         }
-      }
-
-      _disabledChanged (newValue) {
-      }
-
-      _itemsChanged (newValue, oldValue) {
       }
 
     }

@@ -67,7 +67,7 @@ class Main extends Base {
   start () {
     if (!this.isRunning) {
       this.state = _RUNNING
-      this.emit('start')
+      this.fire('start')
     }
     return this
   }
@@ -75,7 +75,7 @@ class Main extends Base {
   stop () {
     if (this.isRunning) {
       this.state = _STOPPED
-      this.emit('stop')
+      this.fire('stop')
     }
     return this
   }
@@ -83,7 +83,7 @@ class Main extends Base {
   pause () {
     if (!this.isPaused) {
       this.state = _PAUSED
-      this.emit('paused')
+      this.fire('paused')
     }
     return this
   }
@@ -91,7 +91,7 @@ class Main extends Base {
   resume () {
     if (this.isPaused) {
       this.state = _RUNNING
-      this.emit('resume')
+      this.fire('resume')
     }
     return this
   }

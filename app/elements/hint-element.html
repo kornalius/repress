@@ -7,7 +7,7 @@
       :host {
         @apply --hint;
         opacity: 0;
-        transition: opacity .25s ease-in-out;
+        transition: opacity .15s ease-in-out;
       }
     </style>
 
@@ -25,20 +25,56 @@
 
       static get properties() {
         return {
+          animSpeed: {
+            type: Number,
+            value: 150,
+          },
+          delay: {
+            type: Number,
+            value: 250,
+          },
+          text: {
+            type: String,
+            value: '',
+          },
+        }
+      }
+
+      connectedCallback () {
+        super.connectedCallback()
+
+        this.style.opacity = '0'
+
+        if (this.domHost) {
+          this.domHost.addEventListener('mousemove', this._onMousemove)
+          this.domHost.addEventListener('mouseout', this._onMouseout)
+        }
+      }
+
+      disconnectedCallback () {
+        super.disconnectedCallback()
+
+        if (this.domHost) {
+          this.domHost.removeEventListener('mousemove', this._onMousemove)
+          this.domHost.removeEventListener('mouseout', this._onMouseout)
         }
       }
 
       show (x, y, text) {
+        text = text || this.text
+
         this.style.opacity = '1'
-        if (!_.isEmpty(text)) {
+
+        if (!_.isEmpty(text) && this.text !== text) {
           this.text = text
         }
+
         setTimeout(() => {
           let w = this.offsetWidth
           let h = this.offsetHeight
           this.style.left = x - w / 2 + 'px'
           this.style.top = y - h / 2 + 'px'
-        }, 100)
+        }, 1)
       }
 
       hide () {
@@ -47,12 +83,36 @@
 
       remove () {
         this.hide()
+
         if (this.parentNode) {
           setTimeout(() => {
             this.parentNode.removeChild(this)
-          }, 250)
+          }, this.animSpeed)
         }
       }
+
+      _onMousemove (e) {
+        let r = e.currentTarget.getBoundingClientRect()
+        let x = e.clientX - r.left
+        let y = e.clientY - r.top
+        let w = r.right - r.left
+        let h = r.bottom - r.top
+
+        this.hide()
+
+        clearTimeout(this._timeout)
+
+        this._timeout = setTimeout(() => {
+          this.show(r.left + w / 2, r.top + h / 2, this.hint)
+        }, this.delay)
+
+        e.stopPropagation()
+      }
+
+      _onMouseout (e) {
+        this.hide()
+      }
+
     }
 
     customElements.define(HintElement.is, HintElement);

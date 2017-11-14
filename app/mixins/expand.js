@@ -1,27 +1,20 @@
-module.exports = Mixin(superclass => class Expand extends superclass {
+module.exports = superclass => class extends superclass {
 
-  constructor () {
-    super(...arguments)
-
-    this._expandable = true
-    this._expanded = false
-  }
-
-  get expandable () { return this._expandable }
-  set expandable (value) {
-    if (value !== this._expandable) {
-      this._expandable = value
-      this.emit('expandable', value)
+  static get properties () {
+    return {
+      expandable: {
+        type: Boolean,
+        value: false,
+      },
+      expanded: {
+        type: Boolean,
+        value: false,
+        observer: '_expandedChanged',
+      },
     }
   }
 
-  get expanded () { return this._expanded }
-  set expanded (value) {
-    if (value !== this._expanded) {
-      this._expanded = value
-      this.emit('expanded', value)
-      this.emit(value ? 'expand' : 'collapse')
-    }
+  _expandedChanged (newValue) {
   }
 
   expand () {
@@ -36,4 +29,4 @@ module.exports = Mixin(superclass => class Expand extends superclass {
     this.expanded = !this.expanded
   }
 
-})
+}

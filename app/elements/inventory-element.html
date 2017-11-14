@@ -16,17 +16,42 @@
     </style>
 
     <div class="title">
-      <span>Inventory View</span>
+      <span>[[label]]</span>
     </div>
 
-    <div class="content"></div>
+    <div class="content">
+
+      <template is="dom-repeat" items="[[items]]">
+
+        <slot-element type="*">
+
+          <item-element name="[[item.name]]" type="[[item.type]]" label="[[item.label]]" hint="[[item.hint]]" img="[[item.img]]"></item-element>
+
+        </slot-element>
+
+      </template>
+
+    </div>
 
   </template>
 
   <script>
-    class InventoryElement extends Polymer.Element {
+    class InventoryElement extends Repress.DisabledMixin(Polymer.Element) {
 
       static get is() { return 'inventory-element'; }
+
+      static get properties () {
+        return {
+          label: {
+            type: String,
+            value: 'Inventory View',
+          },
+          items: {
+            type: Array,
+            value: () => [],
+          },
+        }
+      }
 
     }
 

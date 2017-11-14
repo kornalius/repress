@@ -35,18 +35,12 @@
   </template>
 
   <script>
-    class ButtonElement extends Polymer.Element {
+    class ButtonElement extends Repress.DisabledMixin(Polymer.Element) {
 
       static get is() { return 'button-element'; }
 
       static get properties() {
         return {
-          disabled: {
-            type: Boolean,
-            value: false,
-            reflectToAttribute: true,
-            observer: '_disabledChanged',
-          },
         }
       }
 
@@ -66,9 +60,6 @@
         this.removeEventListener('mouseup', this._onMouseup)
         this.removeEventListener('mouseover', this._onMouseover)
         this.removeEventListener('mouseout', this._onMouseout)
-      }
-
-      _disabledChanged () {
       }
 
       _onMousedown (e) {

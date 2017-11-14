@@ -1,4 +1,6 @@
 <link rel="import" href="theme.html">
+<link rel="import" href="image-element.html">
+<link rel="import" href="hint-element.html">
 
 <dom-module id="item-element">
 
@@ -8,26 +10,30 @@
       }
     </style>
 
+    <hint-element text="[[hint]]"></hint-element>
+
+    <image-element class="layout horizontal center" src="[[img]]"></image-element>
+
+    <span id="label" class="layout horizontal center" hidden$="[[onScene]]">[[label]]</span>
+
   </template>
 
   <script>
-    class ItemElement extends Polymer.Element {
+    class ItemElement extends Repress.DisabledMixin(Polymer.Element) {
 
       static get is() { return 'item-element'; }
 
       static get properties () {
         return {
-          disabled: {
-            type: Boolean,
-            value: false,
-            reflectToAttribute: true,
-            observer: '_disabledChanged',
-          },
-          label: {
+          type: {
             type: String,
             value: '',
           },
-          img: {
+          name: {
+            type: String,
+            value: '',
+          },
+          label: {
             type: String,
             value: '',
           },
@@ -35,10 +41,31 @@
             type: String,
             value: '',
           },
+          img: {
+            type: String,
+            value: '',
+          },
+          x: {
+            type: Number,
+            value: 0,
+          },
+          y: {
+            type: Number,
+            value: 0,
+          },
+          rotation: {
+            type: Number,
+            value: 0,
+          },
+          scale: {
+            type: Number,
+            value: 1,
+          },
+          onScene: {
+            type: Boolean,
+            value: false,
+          },
         }
-      }
-
-      _disabledChanged (newValue) {
       }
 
     }

@@ -1,14 +1,24 @@
-/**
- * @module mixins
- */
+module.exports = superclass => class extends superclass {
 
-module.exports = Mixin(superclass => class Options extends superclass {
+  static get properties () {
+    return {
+      validOptions: {
+        type: Array,
+        observer: '_validOptionsChanged',
+        value: () => [],
+      },
+      options: {
+        type: Array,
+        observer: '_optionsChanged',
+        value: () => [],
+      },
+    }
+  }
 
-  constructor () {
-    super(...arguments)
+  _optionsChanged (newValue) {
+  }
 
-    this._validOptions = []
-    this._options = []
+  _validOptionsChanged (newValue) {
   }
 
   addOption (name) {
@@ -18,10 +28,8 @@ module.exports = Mixin(superclass => class Options extends superclass {
       }
     }
     else if (!this.hasOption(name) && this.isValidOption(name)) {
-      this._options.push(name)
-      this.emit('option:add', name)
+      this.push('options', name)
     }
-    return this
   }
 
   removeOption (name) {
@@ -31,10 +39,8 @@ module.exports = Mixin(superclass => class Options extends superclass {
       }
     }
     else if (this.hasOption(name)) {
-      _.pull(this._options, name)
-      this.emit('option:remove', name)
+      this.splice('options', _.indexOf(this.options, name), 1)
     }
-    return this
   }
 
   setOption (name, value) {
@@ -50,12 +56,11 @@ module.exports = Mixin(superclass => class Options extends superclass {
   }
 
   toggleOption (name) {
-    this.setOption(name, !this.hasOption(name))
-    return this
+    return this.setOption(name, !this.hasOption(name))
   }
 
   isValidOption (name) {
-    return _.includes(this._validOptions, name)
+    return _.includes(this.validOptions, name)
   }
 
   addValidOption (name) {
@@ -65,9 +70,8 @@ module.exports = Mixin(superclass => class Options extends superclass {
       }
     }
     else if (!this.isValidOption(name)) {
-      this._validOptions.push(name)
+      this.push('validOptions', name)
     }
-    return this
   }
 
   removeValidOption (name) {
@@ -77,13 +81,12 @@ module.exports = Mixin(superclass => class Options extends superclass {
       }
     }
     else if (this.isValidOption(name)) {
-      _.pull(this._validOptions, name)
+      this.splice('validOptions', _.indexOf(this.validOptions, name), 1)
     }
-    return this
   }
 
   hasOption (name) {
-    return this.isValidOption(name) && _.includes(this._options, name)
+    return this.isValidOption(name) && _.includes(this.options, name)
   }
 
-})
+}

@@ -17,14 +17,18 @@
     </style>
 
     <div class="title">
-      <span>Stats View</span>
+      <span>[[label]]</span>
     </div>
 
-    <template is="dom-repeat" items="[[stats]]">
+    <div class="content">
 
-      <stat-element label="[[item.label]]" img="[[item.img]]" value="[[item.value]]" min="[[item.min]]" max="[[item.max]]" show-progress show-max></stat-element>
+      <template is="dom-repeat" items="[[stats]]">
 
-    </template>
+        <stat-element label="[[item.label]]" img="[[item.img]]" value="[[item.value]]" min="[[item.min]]" max="[[item.max]]" show-progress show-max></stat-element>
+
+      </template>
+
+    </div>
 
   </template>
 
@@ -35,6 +39,10 @@
 
       static get properties () {
         return {
+          label: {
+            type: String,
+            value: 'Stats View',
+          },
           stats: {
             type: Array,
             value: () => [],

@@ -11,6 +11,18 @@ class Base extends Emitter {
     return _.cloneDeep(this)
   }
 
+  fire (name, data) {
+    this.emit(name, data)
+    if (window.Repress) {
+      if (this !== window.Repress.player) {
+        window.Repress.player.emit(name, data)
+      }
+      if (this !== window.Repress.story) {
+        window.Repress.story.emit(name, data)
+      }
+    }
+  }
+
 }
 
 module.exports = Base
