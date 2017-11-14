@@ -141,11 +141,11 @@
       }
 
       get player () {
-        return this.$.player
+        return _.get(this, '$.player')
       }
 
       get story () {
-        return this.$.story
+        return _.get(this, '$.story')
       }
 
       ready () {

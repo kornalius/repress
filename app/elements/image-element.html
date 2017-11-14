@@ -26,7 +26,6 @@
           src: {
             type: String,
             value: '',
-            observer: '_srcChanged',
           },
           areas: {
             type: Array,
@@ -56,9 +55,6 @@
         this.removeEventListener('mousemove', this._onMousemove)
         this.removeEventListener('mouseup', this._onMouseup)
         this.removeEventListener('mouseout', this._onMouseout)
-      }
-
-      _srcChanged () {
       }
 
       _areasChanged (newValue, oldValue) {
