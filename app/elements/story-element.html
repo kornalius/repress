@@ -42,7 +42,7 @@
 
       <items-element id="items" items="[[items]]"></items-element>
 
-      <text-element id="text"></text-element>
+      <text-element id="text" on-type-done="_onTypeDone"></text-element>
 
     </div>
 
@@ -78,6 +78,11 @@
             type: Object,
             value: () => {},
             observer: '_roomsChanged',
+          },
+          menu: {
+            type: Array,
+            value: () => [],
+            observer: '_menuChanged',
           },
         }
       }
@@ -139,6 +144,23 @@
       _roomsChanged (newValue, oldValue) {
       }
 
+      _itemsChanged (newValue) {
+        if (_.isArray(newValue)) {
+          for (let item of newValue) {
+            let el = document.createElement('item-element')
+            el.name = item.name
+            el.type = item.type
+            el.img = item.sceneImg
+            el.hint = item.hint
+            el.x = item.x
+            el.y = item.y
+            el.scale = item.scale
+            el.rotation = item.rotation
+            this.$.image.shadowRoot.appendChild(el)
+          }
+        }
+      }
+
       _musicChanged (newValue, oldValue) {
         setTimeout(() => {
           if (!_.isEmpty(oldValue)) {
@@ -155,6 +177,15 @@
         _.each(_.concat(this.$.image, this.$.text, this.$.items), el => {
           el.disabled = newValue
         })
+      }
+
+      _menuChanged (newValue) {
+      }
+
+      _onTypeDone () {
+        if (!_.isEmpty(this.menu)) {
+          this.showMenu(this.menu)
+        }
       }
 
       goto (def) {
@@ -195,6 +226,11 @@
           this.write(text)
         }
 
+        let menu = _.get(def, 'menu')
+        if (_.isArray(menu)) {
+          this.set('menu', menu)
+        }
+
         def.state = _.extend(state, { visited: true })
 
         return true
@@ -208,7 +244,7 @@
         this.$.text.$.content.appendChild(t)
       }
 
-      menu (items) {
+      showMenu (items) {
 
       }
 

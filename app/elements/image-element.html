@@ -10,7 +10,7 @@
       }
     </style>
 
-    <img src="[[src]]"></img>
+    <img id="image" src="[[src]]"></img>
 
     <div id="hints"></div>
 
@@ -35,6 +35,26 @@
           debugMode: {
             type: Boolean,
             value: true,
+          },
+          x: {
+            type: Number,
+            value: 0,
+            observer: '_xChanged',
+          },
+          y: {
+            type: Number,
+            value: 0,
+            observer: '_yChanged',
+          },
+          rotation: {
+            type: Number,
+            value: 0,
+            observer: '_rotationChanged',
+          },
+          scale: {
+            type: Number,
+            value: 1,
+            observer: '_scaleChanged',
           },
         }
       }
@@ -160,6 +180,32 @@
               break
             }
           }
+        }
+      }
+
+      _xChanged (newValue) {
+        if (this.$.image) {
+          this.$.image.style.position = 'absolute'
+          this.$.image.style.top = newValue + 'px'
+        }
+      }
+
+      _yChanged (newValue) {
+        if (this.$.image) {
+          this.$.image.style.position = 'absolute'
+          this.$.image.style.left = newValue + 'px'
+        }
+      }
+
+      _rotationChanged (newValue) {
+        if (this.$.image) {
+          this.$.image.style.transform = 'rotate(' + newValue + 'deg)'
+        }
+      }
+
+      _scaleChanged (newValue) {
+        if (this.$.image) {
+          this.$.image.style.transform = 'scale(' + newValue + ', ' + newValue + ')'
         }
       }
 
