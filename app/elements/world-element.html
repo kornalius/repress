@@ -1,0 +1,162 @@
+
+<dom-module id="world-element">
+
+  <script>
+    class WorldElement extends Polymer.Element {
+
+      static get is() { return 'world-element'; }
+
+      static get properties () {
+        return {
+          kinds: {
+            type: Object,
+            value: () => {},
+          },
+          things: {
+            type: Object,
+            value: () => {},
+          },
+          props: {
+            type: Object,
+            value: () => {},
+          },
+          rooms: {
+            type: Array,
+            value: () => [],
+          },
+        }
+      }
+
+      addKind (name) {
+        kinds[name.toLowerCase()] = {}
+      }
+
+      addThing (name) {
+        things[name.toLowerCase()] = {}
+      }
+
+      addProp (name, values) {
+        props[name.toLowerCase()] = values || {}
+      }
+
+      getKind (name) {
+        return kinds[name.toLowerCase()]
+      }
+
+      getThing (name) {
+        return things[name.toLowerCase()]
+      }
+
+      getProp (name) {
+        return props[name.toLowerCase()]
+      }
+
+      _addProp (instance, name, values) {
+        if (_.isArray(name)) {
+          for (let n of name) {
+            _.set(instance, ['props', n], values || true)
+          }
+        }
+
+        for (let n of name.split('|')) {
+          _.set(instance, ['props', n], values || true)
+        }
+      }
+
+      addPropToKind (kindName, propName, values) {
+        let k = this.getKind(kindName)
+        if (k) {
+          k._addProp(k, propName, values)
+        }
+      }
+
+      addPropToThing (thingName, propName, values) {
+        let t = this.getThing(thingName)
+        if (t) {
+          t._addProp(t, propName, values)
+        }
+      }
+
+      _hasProp (instance, name) {
+        if (_.isArray(name)) {
+          for (let n of name) {
+            if (_.isUndefined(_.get(instance, ['props', n]))) {
+              return false
+            }
+          }
+        }
+
+        for (let n of name.split('|')) {
+          if (_.isUndefined(_.get(instance, ['props', n]))) {
+            return false
+          }
+        }
+
+        return true
+      }
+
+      kindHasProp (kindName, propName) {
+        let k = this.getPropsForKind(kindName)
+        return k ? this._hasProp(k, propName) : false
+      }
+
+      thingHasProp (thingName, propName) {
+        let t = this.getPropsForThing(thingName)
+        return t ? this._hasProp(t, propName) : false
+      }
+
+      _getProps (instance) {
+        let props = {}
+        _.extend(props, this.getPropsForKind(instance.kind))
+        _.extend(props, instance.props || {})
+        return props
+      }
+
+      getPropsForKind (name) {
+        let k = this.getKind(name)
+        return k ? this._getProps(k) : {}
+      }
+
+      getPropsForThing (name) {
+        let t = this.getThing(name)
+        return t ? this._getProps(t) : {}
+      }
+
+      _getProp (instance, name) {
+        let props = this._getProps(instance)
+        return props[name]
+      }
+
+      getPropForKind (name) {
+        let k = this.getKind(name)
+        return k ? this._getProp(k) : undefined
+      }
+
+      getPropForThing (name) {
+        let t = this.getThing(name)
+        return t ? this._getProp(t) : undefined
+      }
+
+      setKindKind (kindName, name) {
+        let k = this.getKind(kindName)
+        if (k) {
+          let kk = this.getKind(name)
+          if (k !== kk) {
+            k.kind = name
+          }
+        }
+      }
+
+      setThingKind (thingName, name) {
+        let t = this.getThing(thingName)
+        if (t) {
+          t.kind = name
+        }
+      }
+
+    }
+
+    customElements.define(WorldElement.is, WorldElement);
+  </script>
+
+</dom-module>
